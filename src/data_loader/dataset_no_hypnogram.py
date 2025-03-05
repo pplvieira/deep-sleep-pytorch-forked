@@ -21,7 +21,7 @@ with warnings.catch_warnings():
 DEFAULT_HYP_LENGTH = 30
 
 
-class MultiCohortDataset(Dataset):
+class MultiCohortDatasetNoHypnogram(Dataset):
 
     def __init__(self, config, subject=None, subset='test'):
         self.config = config
@@ -36,7 +36,7 @@ class MultiCohortDataset(Dataset):
         self.modalities = config.data_loader.modalities
         self.num_channels = len(self.modalities) + 1
         self.num_classes = config.data_loader.num_classes
-        self.segment_length = config.data_loader.segment_length
+        self.segment_length = config.data_loader.segment_length #300
         assert self.segment_length % DEFAULT_HYP_LENGTH == 0, 'Segment length should be a multiple of 30 s!'
 
         self.df = None
@@ -48,7 +48,7 @@ class MultiCohortDataset(Dataset):
         #print("[SHAPES]", self.data.shape)
         print("[SHAPES]", len(self.data), self.data_dir)
         print("[SHAPES]", self.data)
-        print("[others]", subject, subset, self.num_subjects, "|", self.num_channels, self.num_classes)
+        print("[others]", subject, subset, self.num_subjects, "|", self.num_channels, self.num_classes)   
 
 
         # Collect dataframes for cohorts
@@ -127,9 +127,10 @@ class MultiCohortDataset(Dataset):
         print('Number of subjects: {}'.format(self.num_subjects))
 
         # We change the hypnogram length depending on the segment size
-        self.mult_factor = self.segment_length // DEFAULT_HYP_LENGTH
+        self.mult_factor = self.segment_length // DEFAULT_HYP_LENGTH #300 // 30
         self.length_recordings = (
             #self.df.HypnogramLength.values // self.mult_factor).astype(np.int)
+            #self.df.HypnogramLength.values // self.mult_factor).astype(int)
             self.df.HypnogramLength.values // self.mult_factor).astype(int)
         self.df['Length'] = self.length_recordings
         self.df['FileLength'] = self.df.HypnogramLength * 30 * self.fs
@@ -137,17 +138,19 @@ class MultiCohortDataset(Dataset):
         self.indexes = [(fid, j * self.mult_factor + range(self.mult_factor)) for i, fid in zip(np.arange(self.num_subjects), self.df['FileID']) for j in np.arange(self.length_recordings[i])]
 
         def get_h5(file):
+            print("[@get h5]", file.lower(), "|", os.path.join(self.data_dir, 'h5', file.lower()))
             with File(os.path.join(self.data_dir, 'h5', file.lower()), 'r') as db:
                 with np.printoptions(precision=2, threshold=5, edgeitems=1):
                     hypnogram = db['hypnogram'][:].astype(np.uint8)
                     psg = db['data'][:].astype(np.float32)
 
+            print("[@get_h5] | hypnogram and data sizes |", hypnogram.shape, psg.shape)
             return file.split('.')[0], psg, hypnogram
 
         # Preloading data as mmaps with joblib
         self.cache_dir = 'data/processed/.cache'
         memory = Memory(self.cache_dir, mmap_mode='r', verbose=0)
-        get_data = memory.cache(get_h5)
+        get_data = memory.cache(get_h5) # REMOVED THIS
 
         self.data = {r: None for r in self.df.FileID}
         self.hypnogram = {r: None for r in self.df.FileID}
@@ -162,9 +165,9 @@ class MultiCohortDataset(Dataset):
             self.data[record] = psg
             self.hypnogram[record] = hypnogram
 
-        print("[FINAL KEYES]", self.data.keys(), self.hypnogram.keys(), type(self.data["a"]), type(self.hypnogram["a"]))
-        print("[FINAL SIZES]", self.data["a"].shape, self.hypnogram["a"].shape)
-        print("")
+        # print("[FINAL KEYES]", self.data.keys(), self.hypnogram.keys(), type(self.data["a"]), type(self.hypnogram["a"]))
+        # print("[FINAL SIZES]", self.data["a"].shape, self.hypnogram["a"].shape)
+        # print("")
 
         
         #print("[others]", subject, subset, self.num_subjects, "|", self.num_channels, self.num_classes)
@@ -175,18 +178,18 @@ class MultiCohortDataset(Dataset):
         return sum(self.length_recordings)
 
     def __getitem__(self, idx):
-        print("GETTING ITEM")
+        #print("ᛰᛰ GETTING ITEM")
         file_id, position = self.indexes[idx]
         position = self.indexes[idx][1]
         cohort = self.df.loc[self.df.FileID == file_id, 'Cohort'].values[0]
         data = self.data[file_id][:, position, :]
         hypnogram = self.hypnogram[file_id][position]
-        out = {'fid': file_id,
-               'position': position,
-               'data': torch.from_numpy(data.reshape((self.num_channels, -1))[np.newaxis, :, :]),
-               'target': torch.LongTensor(np.repeat(hypnogram, DEFAULT_HYP_LENGTH))}
-        print("[OUT]", file_id, "|", position, "|", cohort, "|", data.shape, "|", hypnogram.data )
-        print("[OUT]", out)
+        out = { 'fid': file_id,
+                'position': position,
+                'data': torch.from_numpy(data.reshape((self.num_channels, -1))[np.newaxis, :, :]),
+                'target': torch.LongTensor(np.repeat(hypnogram, DEFAULT_HYP_LENGTH))}
+        #print("[OUT]", file_id, "|", position, "|", cohort, "|", data.shape, "|", hypnogram.data )
+        #print("[OUT]", out)
         return out
 
     def get_subjects(self):

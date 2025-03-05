@@ -138,11 +138,20 @@ def process_file(series_file):
                 hypnogram = [int(h) for h in hypnogram.split('\n') if h]
         else:
             hypnogram = []
+            hypnogram = [0 for i in range(1760)] # !!! ADDED THIS
+            #hypnogram = [i%5 for i in range(100)] # !!! ADDED THIS
+            #hypnogram[1] = 1 
+            #hypnogram[2] = 2 
+            #hypnogram[3] = 3 
+            #hypnogram[4] = 4 
+            print("[UNIQUE @ HYPNOGRAM]", np.unique(np.array(hypnogram)))
     except:
         return None, None
     hypnogram = np.asarray(hypnogram)
 
     # Figure out which channels to load
+    LOG.info('{: <5} | {: <5} | {: <5} | Loading EDF FILE '.format(
+                cohort, subset, file_edf))
     edf = pyedflib.EdfReader(file_edf)
     n_signals = edf.signals_in_file
     sampling_frequencies = edf.getSampleFrequencies()
@@ -170,13 +179,22 @@ def process_file(series_file):
         if any([isinstance(v, list) for k, v in signal_label_idx.items() if k in ['A1', 'A2']]):
             return None, None
 
+
+    print("=== edf.getNSamples()", edf.getNSamples())
     # Load all the relevant data
     for chn, idx in signal_label_idx.items():
         if isinstance(idx, list):
-            continue
+            #signal_data[chn] = np.zeros((1, edf.getNSamples()[0]))
+            continue #### ORIGINAL WAS ONLY THIS LINE
         else:
             signal_data[chn] = np.zeros((1, edf.getNSamples()[idx]))
+            #print("[shape before]", signal_data[chn].shape)
             signal_data[chn][0, :] = edf.readSignal(idx)
+            #print("[shape after] ", signal_data[chn].shape)
+
+    print("=== signal_label_idx", signal_label_idx)
+    print("=== signal_data", signal_data["C3"].shape, signal_data["LChin"])
+
 
     # Possibly do referencing and delete ref channels afterwards
     if rereference_data:
@@ -184,29 +202,42 @@ def process_file(series_file):
             '{: <5} | {: <5} | {: <5} | Referencing data channels'.format(
                 cohort, subset, fileID))
         left_channels = ['C3', 'EOGL']
+        #left_channels = ['C3'] ### !!!! CHANGED THIS PART
         if signal_label_idx['A2']:
             for chn in left_channels:
                 # LOG.info('Referencing {} to A2'.format(chn))
+                print("##»", chn)
+                print("###", signal_data[chn].shape)
+                print("###", signal_data["A2"].shape)
                 signal_data[chn] -= signal_data['A2']
         right_channels = ['C4', 'EOGR']
+        #right_channels = ['C4'] ### !!!! CHANGED THIS PART
         if signal_label_idx['A1']:
             for chn in right_channels:
                 # LOG.info('Referencing {} to A1'.format(chn))
                 signal_data[chn] -= signal_data['A1']
         if not signal_label_idx['EMG']:
             # LOG.info('Referencing LChin to RChin'.format())
-            signal_data['EMG'] = signal_data['LChin'] - signal_data['RChin']
-            signal_label_idx['EMG'] = signal_label_idx['LChin']
+            # signal_data['EMG'] = signal_data['LChin'] - signal_data['RChin'] ### !! THIS LINE WAS UNCOMMENTED
+            # signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0])) ### !! ADDED THIS LINE
+            # signal_label_idx['EMG'] = signal_label_idx['LChin']  ### !! THIS LINE WAS UNCOMMENTED
+            pass
     del signal_data['A1'], signal_data['A2'], signal_data['LChin'], signal_data['RChin']
 
     # Resample signals
+    print("=== signal_label_idx", signal_label_idx)
     fs = config['FILTERS']['fs_resampling']
     LOG.info('{: <5} | {: <5} | {: <5} | Resampling data'.format(
         cohort, subset, fileID))
     for chn in signal_data.keys():
         if not isinstance(signal_data[chn], list):
+            print("[For chn in signal data key]", fs, "|", chn, ":", signal_label_idx[chn], "|", sampling_frequencies[signal_label_idx[chn]])
             signal_data[chn] = signal.resample_poly(signal_data[chn], fs, sampling_frequencies[signal_label_idx[chn]],
                                                     axis=1)
+
+
+    signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0]//2)) ### !! ADDED THIS LINE
+
 
     # Decide on which EEG channel to use
     if isinstance(signal_data['C3'], list) and not isinstance(signal_data['C4'], list):
@@ -249,6 +280,7 @@ def process_file(series_file):
             X = psg[chn][np.newaxis, k, :]
             m = np.mean(X)
             s = np.std(X)
+            #print("[### parameters]:", chn, X, m, s)
             psg[chn][k, :] = (X - m)/s
 
     # Segment the PSG data
@@ -262,7 +294,7 @@ def process_file(series_file):
             cohort, subset, fileID, trim_length, max_length))
     hypnogram = hypnogram[:trim_length]
     #psg_seg = {chn: sig[:, :trim_length, :] for chn, sig in psg_seg.items()}
-    psg_seg = {chn: sig[:, :trim_length, :] for chn, sig in psg_seg.items()} 
+    psg_seg = {chn: sig[:, :, :] for chn, sig in psg_seg.items()} 
 
     # Lights off/on period only
     if cohort in ['mros']:
@@ -292,6 +324,7 @@ def process_file(series_file):
         psg_seg = {chn: signal[:, keep_idx, :] for chn, signal in psg_seg.items()}
         hypnogram = hypnogram[keep_idx]
 
+    print("[UNIQUE @ HYPNOGRAM]", np.unique(np.array(hypnogram)))
     return psg_seg, hypnogram
 
 
@@ -329,8 +362,8 @@ def process_cohort(paths_cohort, name_cohort):
     elif name_cohort in ['wsc', 'ssc']:
         list_hypnogram = sorted(
             glob(paths_cohort['stage'] + '/*.[Ss][Tt][Aa]'))
-    elif name_cohort in ['sleepTrial1']:
-        list_hypnogram = ["a"] # !!MODIFY HERE!!
+    elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']:
+        list_hypnogram = [f"b{i}" for i in range(len(list_edf))] # !!MODIFY HERE!!
     elif name_cohort in ['isruc']:
         list_hypnogram = sorted(
             glob(paths_cohort['stage'] + '/**/*_1.[Tt][Xx][Tt]', recursive=True))
@@ -348,11 +381,11 @@ def process_cohort(paths_cohort, name_cohort):
     elif name_cohort == 'isruc':
         hyp_IDs = [hypID[hypID.find('subgroup'):-6]
                    for hypID in list_hypnogram]
-    elif name_cohort == "sleepTrial1": ## !! MODIFY HERE
+    elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']: ## !! MODIFY HERE
         hyp_IDs = []
 
-    list_ID_union = list(set(list_fileID) & set(hyp_IDs)) # CORRETO
-    list_ID_union = list(set(list_fileID) | set(hyp_IDs)) # ERRADO
+    list_ID_union = list(set(list_fileID) & set(hyp_IDs)) # !! CORRETO
+    list_ID_union = list(set(list_fileID) | set(hyp_IDs)) # !! ERRADO
     print("[list_ID_union]", list_ID_union)
     for id in hyp_IDs:
         if not id in list_ID_union:
@@ -370,9 +403,9 @@ def process_cohort(paths_cohort, name_cohort):
         baseDir = [os.path.split(edf[:edf.find('subgroup')])[0]
                    for edf in list_edf]
         list_fileID = [fid[fid.find('subgroup'):-4] for fid in list_edf]
-    elif name_cohort == "sleepTrial1":
+    elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']:
         print("[*-1*]", list_edf)
-        baseDir, list_fileID = [["a"], ["a"]]
+        baseDir, list_fileID = [[f"b{i}" for i in range(len(list_edf))], [f"b{i}" for i in range(len(list_edf))]]
     else:
         print("[*-2*]", list_edf)
         baseDir, list_fileID = map( list, zip(*[os.path.split(edf[:-4]) for edf in list_edf]))
@@ -437,6 +470,7 @@ def process_cohort(paths_cohort, name_cohort):
     # Process files
     for idx, row in df_cohort.iterrows():
         psg, hypnogram = process_file(row)
+        print("@ process files", len(hypnogram), len(hypnogram))
         if psg is None:
             LOG.info('{: <5} | Skipping file: {}'.format(
                 name_cohort, row['FileID']))
@@ -450,7 +484,7 @@ def process_cohort(paths_cohort, name_cohort):
                 name_cohort, row['FileID'], N))
 
             # Write H5 file for subject
-            write_H5(psg, hypnogram, N, row)
+            write_H5(psg, hypnogram, N, row) ### SKIPPED
             df_cohort.loc[idx, 'HypnogramLength'] = N
 
     return df_cohort
