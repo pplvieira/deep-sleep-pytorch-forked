@@ -1,0 +1,38 @@
+{
+    "A1": [
+        "P3"
+    ],
+    "A2": [
+        "P4"
+    ],
+    "C3": [
+        "C3"
+    ],
+    "C4": [
+        "C4"
+    ],
+    "EMG": [],
+    "EOGL": [
+        "FP1"
+    ],
+    "EOGR": [
+        "FP2"
+    ],
+    "LChin": [],
+    "RChin": [],
+    "categories": [
+        "C3",
+        "C4",
+        "A1",
+        "A2",
+        "EOGL",
+        "EOGR",
+        "LChin",
+        "RChin",
+        "EMG"
+    ],
+    "edfFiles": [
+        "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\data\\2024-11-22_14-08-21_8e19cc41_27_electrodes.edf"
+    ],
+    "pathname": "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\data"
+}

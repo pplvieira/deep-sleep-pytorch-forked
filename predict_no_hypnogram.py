@@ -19,6 +19,10 @@ from src.utils.factory import create_instance
 from src.utils.logger import Logger
 
 
+import yasa
+from yasa import simulate_hypnogram
+
+
 def main(config, resume):
     test_logger = Logger()
 
@@ -27,7 +31,7 @@ def main(config, resume):
 
     # build model architecture
     model = create_instance(config.network)(config)
-    print(model)
+    #print(model)
 
     # Load checkpointed model
     print(f'Loading best model weights: {resume} ...')
@@ -44,6 +48,7 @@ def main(config, resume):
 
     # prepare model for testing
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cpu')
     model = model.to(device)
     model.eval()
 
@@ -62,17 +67,17 @@ def main(config, resume):
 
         # Setup data_loader instances
         dataset = create_instance(config.data_loader)(config, subset=subset)
-        print("\n[dataset]", type(dataset), len(dataset))
+        print("\n[dataset]", len(dataset), type(dataset))
         df_subset = dataset.df
         print("»» DF subset", df_subset.shape, "\n", df_subset)
         subjects_in_subset = {r.FileID: {'true': [], 'pred': []} for _, r in df_subset.iterrows()}
         data_loader = DataLoader(dataset,
-                                 batch_size=dataset.batch_size,
-                                 shuffle=False,
-                                 #num_workers=20,
-                                 num_workers=1,
-                                 drop_last=False,
-                                 pin_memory=True)
+                                batch_size=dataset.batch_size,
+                                shuffle=False,
+                                #num_workers=20,
+                                num_workers=1,
+                                drop_last=False,
+                                pin_memory=True)
         print("### len dataloader", len(data_loader))
 
         # Get raw predictions
@@ -80,14 +85,15 @@ def main(config, resume):
         bar.set_description(f'[ {subset.upper()} ]')
         predictions = []
         targets = []
-        print("\n[bar]", type(bar), len(bar), len(data_loader))
+        print("\n[bar]", len(bar), len(data_loader)), type(bar)
         with torch.no_grad():
             for i, out in enumerate(bar):
                 data = out['data']
                 target = out['target'].cpu().numpy()
                 file_id = out['fid']
-                print("[file_id]", file_id)
+                #print("[file_id]", file_id)
                 position = out['position']
+                print("Device:", device)
                 output = model(data.to(device)).cpu()
                 for j, fid in enumerate(file_id):
                     if i == 0 and j == 0:
@@ -95,11 +101,19 @@ def main(config, resume):
                     if current_subject == fid:
                         targets.append(target[j, :])
                         predictions.append(output[j, :, :].softmax(dim=0).numpy())
+                        # SOME PRINTS
+                        print("[@SOME PRINTS]", np.array(targets).shape, np.array(predictions).shape, "|", fid, j, "|", data.shape, output.shape, np.unique(output.numpy()), "|", np.unique(targets), np.unique(predictions))
+                        #print("[@SOME PRINTS]", np.array(targets).shape, np.array(predictions).shape, "|", fid, j, "|", data.shape, output.shape, np.unique(data.numpy()), np.unique(output.numpy()), "|", np.unique(targets), np.unique(predictions))
                     else:
                         # Save predictions as pickles with true and predicted labels for each subject as a separate file. Predictions are softmaxes every 1 second.
                         with open(os.path.join(prediction_dir, current_subject + '.pkl'), 'wb') as handle:
                             pickle.dump({'targets': targets, 'predictions': predictions}, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                        
+                        # SOME PRINTS
+                        print("[@SOME PRINTS22]", np.unique(targets), np.unique(predictions))
 
+                        print(t)
+                        
                         # Reset variables
                         current_subject = fid
                         targets = []
@@ -155,9 +169,14 @@ def main(config, resume):
                 labels = pickle.load(handle)
             t = np.concatenate(labels['targets'], axis=0)
             p = np.concatenate(labels['predictions'], axis=1)
+            print("[set targets]", t.shape, np.unique(t)) #(9000,)
+            print("[set predict]", p.shape, np.unique(p)) #(5, 9000)
             # subset = row.Subset
             # t = np.concatenate(subjects[subset][fid]['true'], axis=0)
             # p = np.concatenate(subjects[subset][fid]['pred'], axis=1)
+
+            print("[TARGETS    ]", t[::eval_window].shape, np.unique(t[::eval_window]))
+            print("[PREDICTIONS]", np.mean(p.reshape(5, -1, eval_window), axis=2).argmax(axis=0).shape, np.unique(np.mean(p.reshape(5, -1, eval_window), axis=2).argmax(axis=0)))
 
             # Extract the metrics
             acc = metrics.accuracy_score(t[::eval_window], np.mean(p.reshape(5, -1, eval_window), axis=2).argmax(axis=0))
