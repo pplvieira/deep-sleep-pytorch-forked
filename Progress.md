@@ -51,6 +51,11 @@
 - Use ```python3 predictions_to_txt.py --eval-window 30``` or ```python3 -m analysis_pedro.predictions_to_txt --eval-window 30``` (or a different number), to generate the *predictions.txt* files with different window sizes
 - Troubleshooting when trying to run the pipeline with another edf file. Perhaps the file is at fault? Or some other modifications I made? Model was predicting nan allways.   
 
+### (Some other days. Missed one friday)
+- Polishing pipeline, customizable and reproducible.
+- Forked Alexander's repo and included my modifications on his pipeline plus analysis and processing/comparisson of predicted sleep stages.
+
+### 14/03/25
 
 
 --- 
