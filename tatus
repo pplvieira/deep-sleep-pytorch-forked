@@ -1,0 +1,80 @@
+[33mcommit 8a0b7727edcdef86de9eba12daea35135479c51e[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: pplvieira <pplvieira@gmail.com>
+Date:   Wed Mar 5 14:12:00 2025 +0100
+
+    test commit
+
+[33mcommit 986e8d8cb82c1ea923727ed1dc6d07e2e0274225[m
+Author: pplvieira <pplvieira@gmail.com>
+Date:   Wed Mar 5 13:43:24 2025 +0100
+
+    Eddits from 4 weeks. Sleep stage pipeline, hypnogram prediction, plot, write to predictions.txt and comparison with results from other pipelines.
+
+[33mcommit db5d6f59369baacabeac956201c3c6de09961945[m[33m ([m[1;31mupstream/main[m[33m, [m[1;31mupstream/HEAD[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: alexno-sherlock <alexno@stanford.edu>
+Date:   Tue Nov 23 05:01:59 2021 -0800
+
+    update description
+
+[33mcommit 9b368371351ae7c3b8aab43502ac5008ec9b0406[m
+Author: alexno-sherlock <alexno@stanford.edu>
+Date:   Tue Nov 23 04:56:19 2021 -0800
+
+    add script to convert pickles into csv
+
+[33mcommit 05054de8145e087a796fdcec64838eaecd527910[m
+Author: Alexander Neergaard Zahid <aneol@dtu.dk>
+Date:   Fri Oct 15 10:10:07 2021 +0200
+
+    Update pickle_reader.py
+
+[33mcommit f21122e56bd5bb792c251d6321635481623a111c[m
+Author: Alexander Neergaard Zahid <aneol@dtu.dk>
+Date:   Fri Oct 15 09:58:26 2021 +0200
+
+    Create pickle_reader.py
+
+[33mcommit 134d7ca475471e67eee7194d232da3eb3d98df8e[m
+Merge: 28b9715 4fa28dd
+Author: Alexander Neergaard Zahid <alexander.neergaard@gmail.com>
+Date:   Sun Jun 27 13:50:41 2021 +0200
+
+    Merge pull request #1 from shyam-lab/main
+    
+    Bug fix in predict.py and README updates
+
+[33mcommit 4fa28dddfe1bebc649e15f0eefab5f3b82e33fce[m
+Author: Shyamal <sagarwal12@bwh.harvard.edu>
+Date:   Thu Jun 17 23:36:12 2021 -0400
+
+    Bug fix in predict.py and README updates
+
+[33mcommit 28b971503578da8159ee867a102a927754d7439b[m
+Author: Alexander Neergaard Olesen <alexander.neergaard@gmail.com>
+Date:   Fri Apr 23 23:59:55 2021 +0200
+
+    Create LICENSE
+
+[33mcommit 105748ad946efa1e0d86f1b81481a75a5cca5298[m
+Author: alexno-sherlock <alexno@stanford.edu>
+Date:   Fri Apr 23 14:57:07 2021 -0700
+
+    update readme
+
+[33mcommit b71def9176ab1b825fd0a7606c0ec440baac4e0a[m
+Author: alexno-sherlock <alexno@stanford.edu>
+Date:   Fri Apr 23 14:53:24 2021 -0700
+
+    add weights
+
+[33mcommit 897c0514335965cd9477dceba2c2580f35ecb664[m
+Author: alexno-sherlock <alexno@stanford.edu>
+Date:   Fri Apr 23 14:35:47 2021 -0700
+
+    commit everything
+
+[33mcommit e019e42997fad5e63322c82a68aeb3b6d1432cd1[m
+Author: alexno-sherlock <alexno@stanford.edu>
+Date:   Fri Apr 23 14:34:07 2021 -0700
+
+    add gitignore

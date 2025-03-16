@@ -68,71 +68,92 @@ def plot_predict_proba(
 
 
 
+def plotHypnogram(predictFile, eval_window, begining_index):
+    sleep_stages_list = ["W", "N1", "N2", "N3", "REM"]
+    def sleep_stage_map(x):
+        r = "W" if x==0 else "N1" if x==1 else "N2" if x==2 else "N3" if x==3 else "REM"
+        return r
 
-sleep_stages_list = ["W", "N1", "N2", "N3", "REM"]
-def sleep_stage_map(x):
-    r = "W" if x==0 else "N1" if x==1 else "N2" if x==2 else "N3" if x==3 else "REM"
-    return r
-
-prediction_dir = "C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/deep-sleep-pytorch/experiments/my_experiment1/predictions-best_weights"
-fid = "a"
-
-begining_index = 18000 # cut index from here
-eval_window = 1
-#eval_window = 60
-#eval_window = 30
-eval_window = 120
-
-print("| INFO | LOADING PREDICTIONS")
-with open(os.path.join(prediction_dir, fid + '.pkl'), 'rb') as handle:
-    labels = pickle.load(handle)
-print("| INFO | DONE LOADING PREDICTIONS")
-
-t = np.concatenate(labels['targets'], axis=0)
-p = np.concatenate(labels['predictions'], axis=1)
-print("[set targets]", t.shape, np.unique(t)) #(9000,)
-print("[set predict]", p.shape, np.unique(p)) #(5, 9000)
-# subset = row.Subset
-# t = np.concatenate(subjects[subset][fid]['true'], axis=0)
-# p = np.concatenate(subjects[subset][fid]['pred'], axis=1)
-
-# targets = t[::eval_window]
-# preds   = p[:, ::eval_window]
-targets = t[begining_index::eval_window]
-preds   = p[:, begining_index::eval_window]
-preds   = np.mean(p[:, begining_index:].reshape(5, -1, eval_window), axis=2)
-
-predictions = np.mean(p[:, begining_index:].reshape(5, -1, eval_window), axis=2).argmax(axis=0)
-predictions = np.array(list(map(sleep_stage_map, predictions))) #sleep_stage_map(predictions)
-
-predictions = np.repeat(predictions, eval_window // 30, axis=0)
-
-predictions_df = pd.DataFrame(preds.T, columns=sleep_stages_list)
-predictions_df.index.name = "epoch"
-
-print("[TARGETS    ]", targets.shape, np.unique(targets))
-print("[PREDICTIONS]", predictions.shape, np.unique(predictions))
+    # prediction_dir = "C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/deep-sleep-pytorch/experiments/my_experiment1/predictions-best_weights"
+    # fid = "a"
+    # fid = "2025-02-18_23-51-08_1a6055f0_27_electrodes"
+    # fid = "2024-11-22_14-08-21_8e19cc41_27_electrodes"
+    prediction_dir = predictFile
+    fid = ""
 
 
-# probabilities hypnogram
-#plt.figure()
-fig1, ax1 = plt.subplots()
-ax1 = plot_predict_proba(predictions_df)
-#plt.show()
+    # begining_index = 18000 # cut index from here
+    # eval_window = 1
+    # #eval_window = 60
+    # #eval_window = 30
+    # eval_window = 120
+
+    print("| INFO | LOADING PREDICTIONS")
+    #with open(os.path.join(prediction_dir, fid + '.pkl'), 'rb') as handle:
+    with open(prediction_dir, 'rb') as handle:
+        labels = pickle.load(handle)
+    print("| INFO | DONE LOADING PREDICTIONS")
+
+    t = np.concatenate(labels['targets'], axis=0)
+    p = np.concatenate(labels['predictions'], axis=1)
+    print("[set targets]", t.shape, np.unique(t)) #(9000,)
+    print("[set predict]", p.shape, np.unique(p)) #(5, 9000)
+    # subset = row.Subset
+    # t = np.concatenate(subjects[subset][fid]['true'], axis=0)
+    # p = np.concatenate(subjects[subset][fid]['pred'], axis=1)
+
+    # targets = t[::eval_window]
+    # preds   = p[:, ::eval_window]
+    targets = t[begining_index::eval_window]
+    preds   = p[:, begining_index::eval_window]
+    preds   = np.mean(p[:, begining_index:].reshape(5, -1, eval_window), axis=2)
+
+    predictions = np.mean(p[:, begining_index:].reshape(5, -1, eval_window), axis=2).argmax(axis=0)
+    predictions = np.array(list(map(sleep_stage_map, predictions))) #sleep_stage_map(predictions)
+
+    predictions = np.repeat(predictions, eval_window // 30, axis=0)
+
+    predictions_df = pd.DataFrame(preds.T, columns=sleep_stages_list)
+    predictions_df.index.name = "epoch"
+
+    print("[TARGETS    ]", targets.shape, np.unique(targets))
+    print("[PREDICTIONS]", predictions.shape, np.unique(predictions))
 
 
-#plt.figure()
-print("predictions shape", predictions.shape)
-hyp = yasa.Hypnogram(predictions)
-fig2, ax2 = plt.subplots()
-ax2 = hyp.plot_hypnogram()
-plt.savefig(f"hypnogram_{eval_window}.png")
-plt.show()
+    # probabilities hypnogram
+    #plt.figure()
+    fig1, ax1 = plt.subplots()
+    ax1 = plot_predict_proba(predictions_df)
+    #plt.show()
+
+
+    #plt.figure()
+    print("predictions shape", predictions.shape)
+    hyp = yasa.Hypnogram(predictions)
+    fig2, ax2 = plt.subplots()
+    ax2 = hyp.plot_hypnogram()
+    plt.savefig(f"hypnogram_{eval_window}.png")
+    plt.show()
 
 
 
 
 
+if __name__ == "__main__":
+    # Parse arguments
+    import argparse
+    parser = argparse.ArgumentParser()
+    #parser.add_argument('--prediction-dir', type=str, help='directory of the id.pkl files',
+    parser.add_argument('predictfile', type=str, help='Full location of id.pkl file',
+                    default="C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\deep-sleep-pytorch\\experiments\\my_experiment1\\predictions-best_weights\\2025-02-18_23-51-08_1a6055f0_27_electrodes.pkl")
+                    #default="C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/deep-sleep-pytorch/experiments/my_experiment1/predictions-best_weights/2024-11-22_14-08-21_8e19cc41_27_electrodes.pkl")
+    parser.add_argument('--eval-window', type=int, default=30, help='eval window size (default: %(30)s)')
+    parser.add_argument('--begining-index', type=int, default=0, help='number of seconds to remove from the begining of recording (default: %(0)s)')
+    args = parser.parse_args()
+
+
+    print("[] PREDICT FILE |", args.predictfile)
+    plotHypnogram(args.predictfile, args.eval_window, args.begining_index)
 
 
 

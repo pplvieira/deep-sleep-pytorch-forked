@@ -7,6 +7,9 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+from collections import Counter
+
+
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, cohen_kappa_score
 
 
@@ -31,8 +34,9 @@ def mutual_information_from_confmat(confmat):
     confmat = np.array(confmat)
     joint_entropy = 0
     mutual_info   = 0
-    marginal1 = confmat.sum(axis=0) / confmat.sum()
-    marginal2 = confmat.sum(axis=1) / confmat.sum()
+    confmat = confmat / confmat.sum() # TURN INTO PROBABILITIES
+    marginal1 = confmat.sum(axis=0) #/ confmat.sum()
+    marginal2 = confmat.sum(axis=1) #/ confmat.sum()
     print("SUMS AND MARGINALS", marginal1, marginal2, confmat.sum())
     for i in range(confmat.shape[0]):
         for j in range(confmat.shape[1]):
@@ -42,6 +46,11 @@ def mutual_information_from_confmat(confmat):
     #return joint_entropy - marginal1 - marginal2
     return mutual_info
 
+
+
+def max_agreeing_predictors(predictions):
+    max_agreement = np.array([max(Counter(timestamp_preds).values()) for timestamp_preds in predictions.T])
+    return max_agreement
 
 
 
@@ -81,8 +90,10 @@ for i, f in enumerate(txtfiles):
 
 print("shape", predictions_lists.shape)
 
+num_raters = predictions_lists.shape[0]
 
-cm_cat = confusion_matrix(predictions_lists[0], predictions_lists[1])
+
+cm_cat = confusion_matrix(predictions_lists[0], predictions_lists[-1])
 print("CMATRIX:\n", cm_cat)
 ConfusionMatrixDisplay(cm_cat).plot()
 
@@ -91,10 +102,31 @@ print("mutual information:", mutual_information)
 
 
 
+## SUPERIMPOSE ALL PREDICTIONS
 plt.figure()
+x_ = np.arange(0, len(predictions_lists[0]))
 for i, predictions in enumerate(predictions_lists): 
-    plt.plot(predictions, label=txtfiles[i])
+    #plt.plot(predictions, label=txtfiles[i])
+    plt.scatter(x_, predictions, label=txtfiles[i], s=2)
 plt.legend()
+
+
+### NUMBER OF AGREEING 
+# number of max agreeers per each timestamp
+max_agreeing_list = max_agreeing_predictors(predictions_lists)
+print("[ ]", len(max_agreeing_list), np.mean(max_agreeing_list), max_agreeing_list)
+
+count_number_of_agreeers = [] # len = number of raters
+for i in range(num_raters):
+    count_number_of_agreeers += [(max_agreeing_list == i+1).sum()] # / len(max_agreeing_list)
+count_number_of_agreeers = np.array(count_number_of_agreeers)
+
+
+fig, ax = plt.subplots()
+rects = ax.bar([i+1 for i in range(num_raters)], count_number_of_agreeers / len(max_agreeing_list) * 100) #, label=bar_labels, color=bar_colors)
+ax.bar_label(rects, padding=3, fmt="{:.1f}%")
+ax.set_title("Proportion of number of agreeers for each timestamp")
+
 
 # weird plot where they agree
 # plt.figure()
@@ -119,11 +151,22 @@ for rater_i in range(n_files):
 
 #print("COHENS MATRIX:\n", cohen_kappa_scores_matrix)
 #plt.figure()
-ConfusionMatrixDisplay(cohen_kappa_scores_matrix, display_labels=txtfiles).plot()
+cm_kappa = ConfusionMatrixDisplay(cohen_kappa_scores_matrix, display_labels=txtfiles).plot()
+cm_kappa.ax_.set_title("Cohen's kappa scores between raters")
 
 #plt.figure()
-ConfusionMatrixDisplay(rater_agreement_scores_matrix, display_labels=txtfiles).plot()
+cm_agree = ConfusionMatrixDisplay(rater_agreement_scores_matrix, display_labels=txtfiles).plot()
+cm_agree.ax_.set_title("Agreement between raters")
 
+
+## TO SEE IF THERE IS ONE STAGE OF SLEEP WITH LESS AGREEMENT
+# stages_with_more_agreement_cm = confusion_matrix(predictions_lists[-1], max_agreeing_list)
+# print("CMATRIX:\n", stages_with_more_agreement_cm)
+# ConfusionMatrixDisplay(stages_with_more_agreement_cm).plot()
+
+# stages_with_more_agreement_cm = confusion_matrix(predictions_lists[-2], max_agreeing_list)
+# print("CMATRIX:\n", stages_with_more_agreement_cm)
+# ConfusionMatrixDisplay(stages_with_more_agreement_cm).plot()
 
 
 plt.show()

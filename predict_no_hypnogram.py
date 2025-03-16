@@ -85,17 +85,23 @@ def main(config, resume):
         bar.set_description(f'[ {subset.upper()} ]')
         predictions = []
         targets = []
-        print("\n[bar]", len(bar), len(data_loader)), type(bar)
+        print("\n[bar]", len(bar), len(data_loader)) #, type(bar))
         with torch.no_grad():
             for i, out in enumerate(bar):
                 data = out['data']
+                data = torch.nan_to_num(data)#### !! REMOVE NANS
                 target = out['target'].cpu().numpy()
                 file_id = out['fid']
                 #print("[file_id]", file_id)
                 position = out['position']
-                print("Device:", device)
-                output = model(data.to(device)).cpu()
+                print("Device:", device, "|", len(file_id), file_id[0], "|", len(data), data.shape)
+                print(data[:,0,:,0])
+                #output = model(data.to(device)).cpu() ### original
+                #output = model(data.to(device)).to(device)
+                output = model(data.to(device)).to(device)
+                print("[ ] Sent to device")
                 for j, fid in enumerate(file_id):
+                    print("[for j, fid in enumerate(file_id)]", i ,"|", j, fid)
                     if i == 0 and j == 0:
                         current_subject = fid
                     if current_subject == fid:
@@ -112,7 +118,7 @@ def main(config, resume):
                         # SOME PRINTS
                         print("[@SOME PRINTS22]", np.unique(targets), np.unique(predictions))
 
-                        print(t)
+                        #print(t)
                         
                         # Reset variables
                         current_subject = fid

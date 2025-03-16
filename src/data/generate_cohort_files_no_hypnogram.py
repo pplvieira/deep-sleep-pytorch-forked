@@ -91,6 +91,8 @@ def process_file(series_file):
     subset = series_file['Partition']
     base_dir = os.path.join(file_edf[:file_edf.find(cohort)], cohort)
 
+    print("[@process file, fileID and edf and hyp files]:", fileID, file_edf, file_hypnogram)
+
     # We skip the file if the hypnogram and fileID do not match up
     skip_file = False
     if cohort == 'shhs' or cohort == 'mros':
@@ -139,6 +141,7 @@ def process_file(series_file):
         else:
             hypnogram = []
             hypnogram = [0 for i in range(1760)] # !!! ADDED THIS
+            hypnogram = [i%4 for i in range(1760)] # !!! ADDED THIS
             #hypnogram = [i%5 for i in range(100)] # !!! ADDED THIS
             #hypnogram[1] = 1 
             #hypnogram[2] = 2 
@@ -347,7 +350,7 @@ def process_cohort(paths_cohort, name_cohort):
     # This returns a file ID (ie. xxx.edf becomes xxx)
     if name_cohort in ['isruc']:
         baseDir = [os.path.split(edf[:edf.find('subgroup')])[0]
-                   for edf in list_edf]
+                    for edf in list_edf]
         list_fileID = [fid[fid.find('subgroup'):-4] for fid in list_edf]
     else:
         baseDir, list_fileID = map(
@@ -364,12 +367,14 @@ def process_cohort(paths_cohort, name_cohort):
             glob(paths_cohort['stage'] + '/*.[Ss][Tt][Aa]'))
     elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']:
         list_hypnogram = [f"b{i}" for i in range(len(list_edf))] # !!MODIFY HERE!!
+        #list_hypnogram = [f"b{i}" for i in range(len(list_edf))] # !!MODIFY HERE!!
+        list_hypnogram =  list_fileID  ### !?!?!
     elif name_cohort in ['isruc']:
         list_hypnogram = sorted(
             glob(paths_cohort['stage'] + '/**/*_1.[Tt][Xx][Tt]', recursive=True))
     else:
         return None
-    list_hypnogram = list_hypnogram[:10]
+    list_hypnogram = list_hypnogram[:10] ### !!! IDK THIS ONE
 
     # Make sure that we only keep those recordings who have a corresponding hypnogram
     if name_cohort == 'wsc' or name_cohort == 'ssc':
@@ -382,11 +387,15 @@ def process_cohort(paths_cohort, name_cohort):
         hyp_IDs = [hypID[hypID.find('subgroup'):-6]
                    for hypID in list_hypnogram]
     elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']: ## !! MODIFY HERE
-        hyp_IDs = []
+        hyp_IDs = [] # idk
+        hyp_IDs = list_hypnogram
+        #hyp_IDs = list_fileID
 
     list_ID_union = list(set(list_fileID) & set(hyp_IDs)) # !! CORRETO
     list_ID_union = list(set(list_fileID) | set(hyp_IDs)) # !! ERRADO
-    print("[list_ID_union]", list_ID_union)
+    print("@ [list_ID_union]", list_ID_union)
+    print("@ [hyp_IDs]", hyp_IDs)
+    print("@ [list_fileID]", list_fileID)
     for id in hyp_IDs:
         if not id in list_ID_union:
             LOG.info('{: <5} | Removing {}'.format(name_cohort, id))
@@ -405,12 +414,13 @@ def process_cohort(paths_cohort, name_cohort):
         list_fileID = [fid[fid.find('subgroup'):-4] for fid in list_edf]
     elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']:
         print("[*-1*]", list_edf)
-        baseDir, list_fileID = [[f"b{i}" for i in range(len(list_edf))], [f"b{i}" for i in range(len(list_edf))]]
+        #baseDir, list_fileID = [[f"b{i}" for i in range(len(list_edf))], [f"b{i}" for i in range(len(list_edf))]] ### ALSO MINE OBV
+        baseDir, list_fileID = map( list, zip(*[os.path.split(edf[:-4]) for edf in list_edf])) ### ADDED THIS ONE!
     else:
         print("[*-2*]", list_edf)
         baseDir, list_fileID = map( list, zip(*[os.path.split(edf[:-4]) for edf in list_edf]))
 
-    print("basedir, listfileID", baseDir, list_fileID)
+    print("[basedir, listfileID]", baseDir, list_fileID)
 
     # Depending on the cohort, subjectID is found in different ways
     if name_cohort == 'shhs':
@@ -423,9 +433,11 @@ def process_cohort(paths_cohort, name_cohort):
         list_subjectID = [fileID.split(sep='_')[1] for fileID in list_fileID]
     elif name_cohort == 'isruc':
         list_subjectID = ['/'.join(fid.split('/')[:2]) for fid in list_fileID]
-    elif name_cohort == 'trialSleep1': ## ! MODIFIED HERE
+    #elif name_cohort == 'trialSleep1': ## ! MODIFIED HERE
+    elif name_cohort == 'sleepTrial1': ## ! MODIFIED HERE
         print("[TESTE]:", list_fileID)
         list_subjectID = ['_'.join(fid.split('_')[:-1]) for fid in list_fileID]
+        list_subjectID = list_fileID
         print("[list_subjectID]:", list_subjectID)
     else:
         list_subjectID = list_fileID
@@ -469,8 +481,9 @@ def process_cohort(paths_cohort, name_cohort):
 
     # Process files
     for idx, row in df_cohort.iterrows():
+        print("[PROCESSING FILE:]\n", row)
         psg, hypnogram = process_file(row)
-        print("@ process files", len(hypnogram), len(hypnogram))
+        print("@ process files (len of psg, hyp)", len(psg), psg.keys(), type(psg["eeg"]), len(hypnogram))
         if psg is None:
             LOG.info('{: <5} | Skipping file: {}'.format(
                 name_cohort, row['FileID']))

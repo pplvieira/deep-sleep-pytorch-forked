@@ -17,7 +17,8 @@
 - [ ] Read Nikolas' friend's data.
 - [ ] Use better BIDS notation and folder hierarchy.
 - [ ] Make better visualizations
-- [ ] Describe pipeline necessary when new eft files are added
+- [ ] Describe pipeline necessary when new eft files are added. For posterity
+- [ ] .
 
 --- 
 --- 
@@ -56,6 +57,10 @@
 - Forked Alexander's repo and included my modifications on his pipeline plus analysis and processing/comparisson of predicted sleep stages.
 
 ### 14/03/25
+In ``` data_sleepTrial1.json ``` use "edf": "D:/Universidade/DTU 2A 1S spring/Specialcourse/data"  OR  "edf": "C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/data",
+- Solved problem from 2 weeks ago, by turning 1 of the 4 channels from nan to zeros at the predictor.
+- Development on the hypnogram predictions comparator (comparison between predictors). Now returns number of agreeing raters for each time stamp; barplot of total count of each max number of agreeers at each time step; matrix between number of agreers and single rater prediction class (maybe scrap).
+- Use ```python3 analysis_pedro\hypnogram_comparison.py``` after ```python3 analysis_pedro\predictions_to_txt.py``` to compare **different raters ON THE SAME SLEEP DATA**.
 
 
 --- 
@@ -66,6 +71,25 @@ OR
 
 ```"edf": "D:/Universidade/DTU 2A 1S spring/Specialcourse/data",```
 
+
+---
+---
+
+# - How to run the pipeline -
+1. Place all EDF files in &lt;*DATAFOLDER*&gt; folder (chose whatever name or directory for &lt;*DATAFOLDER*&gt;).
+2. Change the ``COHORT>sleepTrial1>"edf"`` line in ```src/configs/signal_labels/sleepTrial1.json``` to &lt;*DATAFOLDER*&gt;. 
+3. (Optional) The electrode mapping can be changed with by running ``` python3 src/utils/channel_label_identifier.py "<DATAFOLDER>" src/configs/signal_labels/sleepTrial1.json C3 C4 A1 A2 EOGL EOGR LChin RChin EMG```. When prompted, select the following electrode mapping: C1:C1 | C2:C2 | A1:P3 | A2:P4 | EOGL:FP1??? | EOGR:FP2??? | LChin: (enter) | RChin: (enter) | EMG: (enter) (0,1,15,16,9,10, , , ). Otherwise skip this step.
+4. Run `python3 -m src.data.generate_cohort_files_no_hypnogram -c data_sleepTrial1.json` to preprocess the edf and hypnogram files, generate pkl and h5 files.
+5. Run `python3 predict_no_hypnogram.py -c config.yaml -r trained_models/best_weights.pth ` to generate the predictions for every timestamp, in a `&lt;UserID&gt;.pkl` file in `\experiments\my_experiment1\predictions-best_weights` and overviews .csv.
+6. (Optional) Run `python3 analysis_pedro\display_hypnogram.py <PREDICTION.pkl filepath>` to display the predicted sleep staging (predicted hypnogram) and probabilities for each timestamp. With `--eval-window 30` (size of moving window) and `--begining-index 0` (instant where sleep actually begins) as costumizable arguments.
+7. Run `python3 -m analysis_pedro.predictions_to_txt --eval-window 30` to apply the moving eval-window on the predictions made before, and write a txt file with the sleep stage predicted for each epoch. These files appear in `\experiments\my_experiment1\predictions-best_weights\predictions_txts`
+8. (Optional) Place any number of files in the same format as `predictions.txt`, from multiple predictors/different pipelines, but FOR THE SAME SLEEP EDF DATA (can have different sizes because of different window sizes). This performs multi-rater comparisons for the same sleep data.
+
+
+---
+
+
+<!-- 
 
 ```
 C:\Users\Pedro\Desktop\Universidade\DTU 2A 1S spring\Specialcourse\deep-sleep-pytorch>python3 -m src.data.generate_cohort_files_no_hypnogram -c data_sleepTrialMulti.json
@@ -114,4 +138,5 @@ hgjad D:/Universidade/DTU 2A 1S spring/Specialcourse/data
 [paths and names] {'edf': 'D:/Universidade/DTU 2A 1S spring/Specialcourse/data', 'stage': ''} sleepTrialExternalDrive
 [listedf] 2 ['D:/Universidade/DTU 2A 1S spring/Specialcourse/data\\2024-11-22_14-08-21_8e19cc41_27_electrodes.edf', 'D:/Universidade/DTU 2A 1S spring/Specialcourse/data\\2025-02-18_23-51-08_1a6055f0_27_electrodes.edf']
 2025-02-28 13:58:25.541 | INFO | Processing cohorts finalized.
-```
+``` -->
+
