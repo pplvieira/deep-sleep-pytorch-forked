@@ -37,7 +37,7 @@ def sleep_stage_map(x):
     return r
 
 
-def predictions_to_txt(eval_window, prediction_dir, fid, begining_index = 18000):
+def predictions_to_txt(eval_window, prediction_dir, output_dir, fid, begining_index): # = 18000
     sleep_stages_list = ["W", "N1", "N2", "N3", "REM"]
 
 
@@ -80,12 +80,13 @@ def predictions_to_txt(eval_window, prediction_dir, fid, begining_index = 18000)
     predictions_df = pd.DataFrame(preds.T, columns=sleep_stages_list)
     predictions_df.index.name = "epoch"
 
-    print("[TARGETS    ]", targets.shape, np.unique(targets))
-    print("[PREDICTIONS]", predictions.shape, np.unique(predictions))
+    print("[TARGETS    ]", targets.shape, np.unique(targets), "| OLD:", t.shape)
+    print("[PREDICTIONS]", predictions.shape, np.unique(predictions), "| OLD:", p.shape, preds.shape)
 
 
 
-    f = open(f"{prediction_dir}/predictions_txts/fid-{fid}_predictions_win-{eval_window}.txt", "w")
+    #f = open(f"{prediction_dir}/predictions_txts/fid-{fid}_predictions_win-{eval_window}.txt", "w")
+    f = open(f"{output_dir}/fid-{fid}_predictions_win-{eval_window}.txt", "w")
     for pred_ in predictions:
         f.write(f"{pred_}\n")
     f.close()
@@ -98,11 +99,14 @@ if __name__ == "__main__":
     # Parse arguments
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument('--eval-window', type=int, default=30, help='eval window size (default: %(30)s)')
+    parser.add_argument('--eval-window', type=int, default=30, help='eval window size (default: %(default)s)')
     parser.add_argument('-c', '--config', default="config.yaml",
                     type=str, help='Path to configuration file (default: my own :D)')
-    parser.add_argument('--prediction-dir', type=str, help='directory of the id.pkl files',
-                    default="C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/deep-sleep-pytorch/experiments/my_experiment1/predictions-best_weights")
+    parser.add_argument('--prediction-dir', type=str, help='directory of the id.pkl files (default: %(default)s)',
+                    default="experiments/my_experiment1/predictions-best_weights")
+    parser.add_argument('--output-dir', type=str, help='directory of the output predictions.txt files (default: %(default)s)',
+                    default="experiments/my_experiment1/predictions-best_weights/predictions_txts")
+    parser.add_argument('--begining-index', type=int, default=0, help='number of seconds to remove from the begining of recording (default: %(default)s)')
     args = parser.parse_args()
 
     # load config file we been using (like with predict_no_hypnogram)
@@ -134,7 +138,7 @@ if __name__ == "__main__":
         # READ PREDICTION FILES
         eval_window = args.eval_window
         for fid in file_ids:
-            predictions_to_txt(eval_window, prediction_dir, fid)
+            predictions_to_txt(eval_window, prediction_dir, fid, args.begining_index)
 
 
 

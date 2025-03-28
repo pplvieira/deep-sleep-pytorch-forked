@@ -6,7 +6,9 @@ data_loader:
   data:
     eval: 
     test:
-    - - sleepTrial1
+    # - - sleepTrial1
+    #   - test
+    - - sleepEDFdatabase
       - test
     train: 
   data_dir: ./data/processed
@@ -51,7 +53,8 @@ optimizer:
   import: torch.optim.SGD
 trainer:
   epochs: 20
-  log_dir: experiments/my_experiment1
+  # log_dir: experiments/my_experiment1
+  log_dir: experiments/my_experiment2
   monitor: min val_loss
   n_gpu: 1
   num_workers: 8 #128

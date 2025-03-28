@@ -14,11 +14,10 @@
 
 - [ ] More customization at generate cohort files and predict hypnogram from pkl with custom directories for data and results
 - [ ] Multi-rater on same psg analysis and same or multiple rater analysis on a cohort of data
-- [ ] Read Nikolas' friend's data.
+- [x] Read Nikolas' friend's data.
 - [ ] Use better BIDS notation and folder hierarchy.
 - [ ] Make better visualizations
 - [ ] Describe pipeline necessary when new eft files are added. For posterity
-- [ ] .
 
 --- 
 --- 
@@ -43,13 +42,13 @@
 - Rerun the pipeline with proper electrode mapping. Workaround because pipeline expects EOG and chin EMG. Make dummy for those or ignore.
 - Presentation from Mark on BIDS brain imaging data structure. Organized folder hierarchy and naming convention. Keep original version of the data and dont overwrite (source; raw (minimaly processed but in compliance to BIDS. processed using a _bidsify_ script (MNE bits VER!!), not manually); derivative). Data and Analysis folders should be on the same level of the project hierarchy.
 - Organized a bit the hierarchy and folder structure. 
-- Created ```predictions_to_txt.py``` to convert predictions probabilities from pickle format to a txt of final predictions [predictions_to_txt.py](/deep-sleep-pytorch/analysis_pedro/predictions_to_txt.py) ***(!! NEED TO MAKE IT USABLE IN THE PIPELINE)***
-- Created ```hypnogram_comparison.py``` to read those txt from different (2) sources and plot the joint hypnogram and labels where they coincide [hypnogram_comparison.py](/deep-sleep-pytorch/analysis_pedro/hypnogram_comparison.py) ***(!! NEED TO MAKE IT USABLE IN THE PIPELINE)***
+- Created ```predictions_to_txt.py``` to convert predictions probabilities from pickle format to a txt of final predictions [predictions_to_txt.py](analysis_pedro/predictions_to_txt.py) ***(!! NEED TO MAKE IT USABLE IN THE PIPELINE)***
+- Created ```hypnogram_comparison.py``` to read those txt from different (2) sources and plot the joint hypnogram and labels where they coincide [hypnogram_comparison.py](analysis_pedro/hypnogram_comparison.py) ***(!! NEED TO MAKE IT USABLE IN THE PIPELINE)***
 - ### Next steps: compare me and Patricia's; use on more data; how the algorithms work, state of the art and how much it improved; OpenNeuro database; look for models that dont need eog and emg; make better visualizations
 
 ### 28/02/25
 - Make better multi-hypnogram result analysis pipeline (reading from the predictions txt), inter-rater kappa score and agreement + matrix plots
-- Use ```python3 predictions_to_txt.py --eval-window 30``` or ```python3 -m analysis_pedro.predictions_to_txt --eval-window 30``` (or a different number), to generate the *predictions.txt* files with different window sizes
+- Use ```python3 predictions_to_txt.py --eval-window 30``` or ```python3 -m analysis_pedro\predictions_to_txt --eval-window 30``` (or a different number), to generate the *predictions.txt* files with different window sizes
 - Troubleshooting when trying to run the pipeline with another edf file. Perhaps the file is at fault? Or some other modifications I made? Model was predicting nan allways.   
 
 ### (Some other days. Missed one friday)
@@ -62,6 +61,15 @@ In ``` data_sleepTrial1.json ``` use "edf": "D:/Universidade/DTU 2A 1S spring/Sp
 - Development on the hypnogram predictions comparator (comparison between predictors). Now returns number of agreeing raters for each time stamp; barplot of total count of each max number of agreeers at each time step; matrix between number of agreers and single rater prediction class (maybe scrap).
 - Use ```python3 analysis_pedro\hypnogram_comparison.py``` after ```python3 analysis_pedro\predictions_to_txt.py``` to compare **different raters ON THE SAME SLEEP DATA**.
 
+### ( Missed one friday )
+
+### 28/03/25
+- Better visualization and pipelines. For hypnogram comparison of multiple predictors for the same sleep EEG
+- Attempt to run pipeline on sleepEDF database. Light (few channels) polysomnography data.
+
+
+
+
 
 --- 
 
@@ -72,18 +80,29 @@ OR
 ```"edf": "D:/Universidade/DTU 2A 1S spring/Specialcourse/data",```
 
 
+
+---
+
+## Papers
+- Automatic sleep staging of EEG signals: recent development, challenges, and future directions. [link](https://pure.au.dk/ws/portalfiles/portal/333848852/Phan_2022_Physiol._Meas._43_04TR01.pdf)
+
 ---
 ---
 
 # - How to run the pipeline -
 1. Place all EDF files in &lt;*DATAFOLDER*&gt; folder (chose whatever name or directory for &lt;*DATAFOLDER*&gt;).
-2. Change the ``COHORT>sleepTrial1>"edf"`` line in ```src/configs/signal_labels/sleepTrial1.json``` to &lt;*DATAFOLDER*&gt;. 
-3. (Optional) The electrode mapping can be changed with by running ``` python3 src/utils/channel_label_identifier.py "<DATAFOLDER>" src/configs/signal_labels/sleepTrial1.json C3 C4 A1 A2 EOGL EOGR LChin RChin EMG```. When prompted, select the following electrode mapping: C1:C1 | C2:C2 | A1:P3 | A2:P4 | EOGL:FP1??? | EOGR:FP2??? | LChin: (enter) | RChin: (enter) | EMG: (enter) (0,1,15,16,9,10, , , ). Otherwise skip this step.
-4. Run `python3 -m src.data.generate_cohort_files_no_hypnogram -c data_sleepTrial1.json` to preprocess the edf and hypnogram files, generate pkl and h5 files.
-5. Run `python3 predict_no_hypnogram.py -c config.yaml -r trained_models/best_weights.pth ` to generate the predictions for every timestamp, in a `&lt;UserID&gt;.pkl` file in `\experiments\my_experiment1\predictions-best_weights` and overviews .csv.
-6. (Optional) Run `python3 analysis_pedro\display_hypnogram.py <PREDICTION.pkl filepath>` to display the predicted sleep staging (predicted hypnogram) and probabilities for each timestamp. With `--eval-window 30` (size of moving window) and `--begining-index 0` (instant where sleep actually begins) as costumizable arguments.
-7. Run `python3 -m analysis_pedro.predictions_to_txt --eval-window 30` to apply the moving eval-window on the predictions made before, and write a txt file with the sleep stage predicted for each epoch. These files appear in `\experiments\my_experiment1\predictions-best_weights\predictions_txts`
-8. (Optional) Place any number of files in the same format as `predictions.txt`, from multiple predictors/different pipelines, but FOR THE SAME SLEEP EDF DATA (can have different sizes because of different window sizes). This performs multi-rater comparisons for the same sleep data.
+2. (optional) Copy the contents of src.configs.data_base.json to another file data_<COHORT_NAME>.json in the same directory.
+3. (optional) Insert the name of your test data COHORT_NAME in line 3 of the file, and change the edf and stage paths to point to the location of your EDFs and hypnograms (this can be the same directory).
+4. (optional) Change the output directory to a custom location
+5. Change the ``COHORT>sleepTrial1>"edf"`` line in ```src/configs/signal_labels/<sleepTrial1>.json``` to &lt;*DATAFOLDER*&gt;. 
+6. In command line, change directory to this folder (deep-sleep-torch).
+7. (Optional) The electrode mapping can be changed with by running ``` python3 src/utils/channel_label_identifier.py "<DATAFOLDER>" src/configs/signal_labels/<sleepTrial1>.json C3 C4 A1 A2 EOGL EOGR LChin RChin EMG```. When prompted, select the following electrode mapping: C1:C1 | C2:C2 | A1:P3 | A2:P4 | EOGL:FP1??? | EOGR:FP2??? | LChin: (enter) | RChin: (enter) | EMG: (enter) (0,1,15,16,9,10, , , ). Otherwise skip this step.
+8. Run `python3 -m src.data.generate_cohort_files_no_hypnogram -c data_sleepTrial1.json` to preprocess the edf and hypnogram files, generate pkl and h5 files.
+9. Edit `config.yaml` appropriately
+10. Run `python3 predict_no_hypnogram.py -c config.yaml -r trained_models/best_weights.pth ` to generate the predictions for every timestamp, in a `&lt;UserID&gt;.pkl` file in `\experiments\my_experiment1\predictions-best_weights` and overviews .csv.
+11. (Optional) Run `python3 analysis_pedro\display_hypnogram.py <PREDICTION.pkl filepath>` to display the predicted sleep staging (predicted hypnogram) and probabilities for each timestamp. With `--eval-window 30` (size of moving window) and `--begining-index 0` (instant where sleep actually begins) as costumizable arguments.
+12. Run `python3 -m analysis_pedro.predictions_to_txt.py --eval-window 30` to apply the moving eval-window on the predictions made before, and write a txt file with the sleep stage predicted for each epoch. These files appear in `\experiments\my_experiment1\predictions-best_weights\predictions_txts`
+13. (Optional) Place any number of files in the same format as `predictions.txt`, from multiple predictors/different pipelines, but FOR THE SAME SLEEP EDF DATA (can have different sizes because of different window sizes). This performs multi-rater comparisons for the same sleep data.
 
 
 ---

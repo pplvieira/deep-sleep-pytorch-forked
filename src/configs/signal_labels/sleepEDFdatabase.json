@@ -1,0 +1,39 @@
+{
+    "A1": [
+        "EEG Fpz-Cz"
+    ],
+    "A2": [
+        "EEG Pz-Oz"
+    ],
+    "C3": [
+        "EEG Fpz-Cz"
+    ],
+    "C4": [
+        "EEG Pz-Oz"
+    ],
+    "EMG": [],
+    "EOGL": [
+        "EOG horizontal"
+    ],
+    "EOGR": [
+        "EOG horizontal"
+    ],
+    "LChin": [],
+    "RChin": [],
+    "categories": [
+        "C3",
+        "C4",
+        "A1",
+        "A2",
+        "EOGL",
+        "EOGR",
+        "LChin",
+        "RChin",
+        "EMG"
+    ],
+    "edfFiles": [
+        "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\SleepEDF-database\\edfs\\SC4001E0-PSG.edf",
+        "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\SleepEDF-database\\hypnograms\\SC4001EC-Hypnogram.edf"
+    ],
+    "pathname": "C:\\\\Users\\\\Pedro\\\\Desktop\\\\Universidade\\\\DTU 2A 1S spring\\\\Specialcourse\\\\SleepEDF-database"
+}

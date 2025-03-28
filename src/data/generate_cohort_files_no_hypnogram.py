@@ -149,6 +149,7 @@ def process_file(series_file):
             #hypnogram[4] = 4 
             print("[UNIQUE @ HYPNOGRAM]", np.unique(np.array(hypnogram)))
     except:
+        print("[Except]")
         return None, None
     hypnogram = np.asarray(hypnogram)
 
@@ -239,7 +240,10 @@ def process_file(series_file):
                                                     axis=1)
 
 
-    signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0]//2)) ### !! ADDED THIS LINE
+    print("[NSamples]", edf.getNSamples(), sampling_frequencies)
+    #signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0]//2)) ### !! ADDED THIS LINE
+    signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0])) ### !! ADDED THIS LINE
+    print("[AFTER]", signal_data['C3'].shape, signal_data['EOGL'].shape, signal_data['EMG'].shape, "\n")
 
 
     # Decide on which EEG channel to use
@@ -253,8 +257,8 @@ def process_file(series_file):
     elif isinstance(signal_data['C4'], list) and not isinstance(signal_data['C3'], list):
         LOG.info(
             '{: <5} | {: <5} | {: <5} | C3 is only EEG'.format(cohort,
-                                                               subset,
-                                                               fileID))
+                                                            subset,
+                                                            fileID))
         eeg = signal_data['C3'].astype(dtype=np.float32)
     elif not isinstance(signal_data['C3'], list) and not isinstance(signal_data['C4'], list):
         energy = [np.sum(np.abs(signal_data[chn]) ** 2)
@@ -271,6 +275,9 @@ def process_file(series_file):
     psg = {'eeg': eeg,
            'eog': np.concatenate((signal_data['EOGL'], signal_data['EOGR'])).astype(dtype=np.float32),
            'emg': signal_data['EMG'].astype(dtype=np.float32)}
+    
+    
+    print("@ process files 1 (len of psg, hyp)", len(psg), psg.keys(), "|", len(hypnogram), (psg["eeg"].shape), (psg["eog"].shape), (psg["emg"].shape))
 
     # Perform filtering
     for chn in psg.keys():
@@ -372,6 +379,10 @@ def process_cohort(paths_cohort, name_cohort):
     elif name_cohort in ['isruc']:
         list_hypnogram = sorted(
             glob(paths_cohort['stage'] + '/**/*_1.[Tt][Xx][Tt]', recursive=True))
+    elif name_cohort in ['sleepEDFdatabase']:
+        #list_hypnogram = [f"b{i}" for i in range(len(list_edf))] # !!MODIFY HERE!!
+        #list_hypnogram = [f"b{i}" for i in range(len(list_edf))] # !!MODIFY HERE!!
+        list_hypnogram =  list_fileID  ### !?!?!
     else:
         return None
     list_hypnogram = list_hypnogram[:10] ### !!! IDK THIS ONE
@@ -389,7 +400,10 @@ def process_cohort(paths_cohort, name_cohort):
     elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']: ## !! MODIFY HERE
         hyp_IDs = [] # idk
         hyp_IDs = list_hypnogram
+    elif name_cohort in ['sleepEDFdatabase']:
+        hyp_IDs = list_hypnogram
         #hyp_IDs = list_fileID
+
 
     list_ID_union = list(set(list_fileID) & set(hyp_IDs)) # !! CORRETO
     list_ID_union = list(set(list_fileID) | set(hyp_IDs)) # !! ERRADO
@@ -483,7 +497,7 @@ def process_cohort(paths_cohort, name_cohort):
     for idx, row in df_cohort.iterrows():
         print("[PROCESSING FILE:]\n", row)
         psg, hypnogram = process_file(row)
-        print("@ process files (len of psg, hyp)", len(psg), psg.keys(), type(psg["eeg"]), len(hypnogram))
+        print("@ process files (len of psg, hyp)", len(psg), psg.keys(), type(psg["eeg"]), "|", len(hypnogram), (psg["eeg"].shape), (psg["eog"].shape), (psg["emg"].shape))
         if psg is None:
             LOG.info('{: <5} | Skipping file: {}'.format(
                 name_cohort, row['FileID']))

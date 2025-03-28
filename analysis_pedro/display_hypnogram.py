@@ -147,9 +147,13 @@ if __name__ == "__main__":
     parser.add_argument('predictfile', type=str, help='Full location of id.pkl file',
                     default="C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\deep-sleep-pytorch\\experiments\\my_experiment1\\predictions-best_weights\\2025-02-18_23-51-08_1a6055f0_27_electrodes.pkl")
                     #default="C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/deep-sleep-pytorch/experiments/my_experiment1/predictions-best_weights/2024-11-22_14-08-21_8e19cc41_27_electrodes.pkl")
-    parser.add_argument('--eval-window', type=int, default=30, help='eval window size (default: %(30)s)')
-    parser.add_argument('--begining-index', type=int, default=0, help='number of seconds to remove from the begining of recording (default: %(0)s)')
+    parser.add_argument('--eval-window', type=int, default=30, help='eval window size (default: %(default)s)')
+    parser.add_argument('--begining-index', type=int, default=0, help='number of seconds to remove from the begining of recording (default: %(default)s)')
+    
     args = parser.parse_args()
+    print("# Options")
+    for key, value in sorted(vars(args).items()):
+        print(key, "=", value)
 
 
     print("[] PREDICT FILE |", args.predictfile)
