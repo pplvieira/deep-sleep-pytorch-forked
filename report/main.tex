@@ -1,0 +1,177 @@
+\documentclass[11pt,oneside,a4paper,english]{article}
+\usepackage[latin2]{inputenc}
+\usepackage[OT1]{fontenc}
+%\usepackage[T1]{fontenc}%for sans serif
+% \renewcommand*\familydefault{\sfdefault} %for sans serif
+%\usepackage[margin=2.1cm,headheight=7pt,includeheadfoot]{geometry} %original
+\usepackage[margin=1.7cm,headheight=7pt,includeheadfoot]{geometry}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{titlesec}
+\usepackage{titling}
+%\usepackage[framed, numbered]{matlab-prettifier}
+\usepackage{changepage}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{caption}
+\usepackage{tocloft}
+\usepackage{setspace}
+\usepackage{multirow}
+\usepackage{titling}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{booktabs}
+\usepackage{lscape}
+\usepackage{booktabs,caption}
+\usepackage[flushleft]{threeparttable}
+\usepackage[english]{nomencl}
+\usepackage{xcolor}
+\usepackage{acronym}
+\usepackage{textgreek}
+\usepackage{lipsum}
+%\usepackage[table]{xcolor}
+\usepackage{subcaption}
+\usepackage[export]{adjustbox}
+\usepackage{wrapfig}
+\usepackage{amsfonts}
+\hypersetup{
+    colorlinks,
+    linkcolor={black!50!black},
+    citecolor={blue!50!black},
+    urlcolor={black!80!black}
+}
+
+\usepackage[parfill]{parskip}
+\usepackage{graphicx}
+
+\usepackage{tabularray}
+\newcommand\setrow[1]{\gdef\rowmac{#1}#1\ignorespaces}
+\newcommand\clearrow{\global\let\rowmac\relax}
+
+%\usepackage{biblatex}
+%\usepackage[backend=bibtex,style=numeric]{biblatex}
+\usepackage{biblatex}
+%\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{document.bib}
+%\bibliographystyle{elsarticle-num}
+%\printbibliography
+
+%%% ––––– !!! wierd symbol
+
+
+% --- set footer and header ---
+\pagestyle{fancy}
+\fancyhf{}
+
+
+% \lstset{language=Matlab,
+% style=Matlab-editor,
+% basicstyle=\normalsize\mlttfamily,
+% numbers=left,
+% numberstyle={\scriptsize\color{black}},			% size of the numbers
+% numbersep=0.5cm											
+% }
+
+\newlist{steps}{enumerate}{1}
+\setlist[steps, 1]{leftmargin=1.5cm,label = Step \arabic*:}
+\renewcommand{\footrulewidth}{1pt}
+%\renewcommand{\headrulewidth}{0pt}
+
+%\lhead{\Title}
+\rfoot{\includegraphics[height=1.0cm]{dtu_logos/logo.pdf}} % right header logo
+\setlength\headheight{3pt}
+\setlength{\footskip}{50pt}
+\setlength{\parskip}{1em}
+% --- End of page settings ---
+
+
+\begin{document}
+\input{mainsetup/0_frontpage}
+
+\pagenumbering{roman}
+%\newpage
+%\addcontentsline{toc}{section}{List of acronyms}
+%\input{mainsetup/acronyms}
+
+
+\newpage
+\doublespacing
+%\addcontentsline{toc}{section}{Table of Contents}
+\renewcommand{\baselinestretch}{1.25}\normalsize
+\tableofcontents
+\renewcommand{\baselinestretch}{1}\normalsize
+%\singlespacing
+\thispagestyle{fancy} % force page style
+%\thispagestyle{empty}
+
+%\newpage
+%\input{mainsetup/TODO}
+
+\newpage
+\pagenumbering{arabic}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+
+%\newpage
+\input{sections/1_abstract}
+
+%\newpage
+\input{sections/2_introduction}
+
+%\newpage
+\input{sections/3_methods}
+
+%\newpage
+\input{sections/4_results}
+
+%\newpage
+\input{sections/5_discussion_conclusion}
+
+
+\newpage
+\addcontentsline{toc}{section}{References}
+%\bibliography{document.bib}  %%%% ESTA LINHA E A SEGUINTE ESTAVAM UNCOMMENTED!!!!
+
+
+%\bibliographystyle{ieeetr}
+\printbibliography
+
+\clearpage
+
+\appendix
+% \section{Appendix A - CNN definition, training and evaluation script}
+% \lstinputlisting[style=Python,
+%     caption=CNN definition, training and evaluation script,
+%     label={RunTrain.py},
+%     breaklines=true,
+%   ]{RunTrain_.py}
+
+
+
+% %\appendix
+% \newpage
+% \section{Appendix B - model reader and weight visualization script}
+% \lstinputlisting[style=Python,
+%     caption=model reader and weight visualization script,
+%     label={VisualizeWeights.py},
+%     breaklines=true,
+%   ]{VisualizeWeights.py}
+
+%\bibliographystyle{aomplain}
+%\bibliographystyle{vancouver}
+\label{EndOfText}
+
+
+%\newpage
+%\pagenumbering{Roman}
+%\fancyfoot[C]{Page \thepage\ of \pageref{EndOfAppendix}}
+%\input{sections/0_code}
+%\label{EndOfAppendix}
+
+\label{endOfDoc}
+
+\end{document}

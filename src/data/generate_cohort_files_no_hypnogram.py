@@ -78,6 +78,8 @@ sos = createPSGfilters(FILTERS)
 
 def write_H5(psg, hypnogram, N, series, subset=None):
     filename = os.path.join(OUTPUT_DIRECTORY, 'h5', series.FileID.lower() + '.h5')
+    print("[WRITING HYPNOGRAM]", filename, psg.shape, hypnogram.shape)
+    #filename = os.path.join(OUTPUT_DIRECTORY, 'h5', series.FileID + '.h5')
     with h5py.File(filename, 'w') as f:
         dset = f.create_dataset('data', data=psg)
         dset = f.create_dataset('hypnogram', data=hypnogram)
@@ -142,12 +144,14 @@ def process_file(series_file):
             hypnogram = []
             hypnogram = [0 for i in range(1760)] # !!! ADDED THIS
             hypnogram = [i%4 for i in range(1760)] # !!! ADDED THIS
+            hypnogram = [i%4 for i in range(2650)] # !!! ADDED THIS
+            #print("[fs]", config.data_loader.fs)
             #hypnogram = [i%5 for i in range(100)] # !!! ADDED THIS
             #hypnogram[1] = 1 
             #hypnogram[2] = 2 
             #hypnogram[3] = 3 
             #hypnogram[4] = 4 
-            print("[UNIQUE @ HYPNOGRAM]", np.unique(np.array(hypnogram)))
+            print("[UNIQUE @ HYPNOGRAM]", np.unique(np.array(hypnogram)), np.array(hypnogram).shape)
     except:
         print("[Except]")
         return None, None
@@ -230,6 +234,7 @@ def process_file(series_file):
 
     # Resample signals
     print("=== signal_label_idx", signal_label_idx)
+    print("&&1", signal_data[list(signal_data.keys())[0]].shape)
     fs = config['FILTERS']['fs_resampling']
     LOG.info('{: <5} | {: <5} | {: <5} | Resampling data'.format(
         cohort, subset, fileID))
@@ -238,12 +243,15 @@ def process_file(series_file):
             print("[For chn in signal data key]", fs, "|", chn, ":", signal_label_idx[chn], "|", sampling_frequencies[signal_label_idx[chn]])
             signal_data[chn] = signal.resample_poly(signal_data[chn], fs, sampling_frequencies[signal_label_idx[chn]],
                                                     axis=1)
+    print("&&1", signal_data[list(signal_data.keys())[0]].shape)
 
 
     print("[NSamples]", edf.getNSamples(), sampling_frequencies)
     #signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0]//2)) ### !! ADDED THIS LINE
-    signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0])) ### !! ADDED THIS LINE
-    print("[AFTER]", signal_data['C3'].shape, signal_data['EOGL'].shape, signal_data['EMG'].shape, "\n")
+    #signal_data['EMG'] = np.zeros((1, edf.getNSamples()[0])) ### !! ADDED THIS LINE
+    signal_data['EMG'] = np.zeros(signal_data['EOGL'].shape) ### !! ADDED THIS LINE
+    #print("[AFTER]", signal_data['C3'].shape, signal_data['EOGL'].shape, signal_data['EMG'].shape, "\n")
+    print("[AFTER]", [(chn, signal_data[chn].shape) for chn in signal_data.keys()], "\n")
 
 
     # Decide on which EEG channel to use
@@ -275,6 +283,15 @@ def process_file(series_file):
     psg = {'eeg': eeg,
            'eog': np.concatenate((signal_data['EOGL'], signal_data['EOGR'])).astype(dtype=np.float32),
            'emg': signal_data['EMG'].astype(dtype=np.float32)}
+    
+
+
+    ### OVERWRITE HYPNOGRAM 
+    if cohort == 'sleepTrial1' or cohort == 'sleepEDFdatabase':
+        hypnogram = [i%4 for i in range(len(psg))] # !!! ADDED THIS
+        hypnogram = [i%4 for i in range(psg["eeg"].shape[1])] # !!! ADDED THIS
+        hypnogram = np.asarray(hypnogram)
+        print("[@ HYPNOGRAM 2]", np.unique(np.array(hypnogram)), np.array(hypnogram).shape)
     
     
     print("@ process files 1 (len of psg, hyp)", len(psg), psg.keys(), "|", len(hypnogram), (psg["eeg"].shape), (psg["eog"].shape), (psg["emg"].shape))
@@ -426,7 +443,7 @@ def process_cohort(paths_cohort, name_cohort):
         baseDir = [os.path.split(edf[:edf.find('subgroup')])[0]
                    for edf in list_edf]
         list_fileID = [fid[fid.find('subgroup'):-4] for fid in list_edf]
-    elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive']:
+    elif name_cohort in ['sleepTrial1', 'sleepTrialExternalDrive', "sleepEDFdatabase"]:
         print("[*-1*]", list_edf)
         #baseDir, list_fileID = [[f"b{i}" for i in range(len(list_edf))], [f"b{i}" for i in range(len(list_edf))]] ### ALSO MINE OBV
         baseDir, list_fileID = map( list, zip(*[os.path.split(edf[:-4]) for edf in list_edf])) ### ADDED THIS ONE!

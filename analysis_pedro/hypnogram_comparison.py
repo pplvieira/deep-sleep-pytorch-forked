@@ -96,9 +96,18 @@ def perform_comparison(prediction_dir: str):
     num_raters = predictions_lists.shape[0]
 
 
-    cm_cat = confusion_matrix(predictions_lists[0], predictions_lists[-1])
+    #cm_cat = confusion_matrix(predictions_lists[0], predictions_lists[-1])
+    cm_cat = confusion_matrix(predictions_lists[0], predictions_lists[1])
+    #                           true/horizontal   -  predicted/vertical
     print("CMATRIX:\n", cm_cat)
-    ConfusionMatrixDisplay(cm_cat).plot()
+    cm_2predictors = ConfusionMatrixDisplay(cm_cat).plot()
+    cm_2predictors.ax_.set_title("Confusion matrix of predictions between models 1 and 2, for subject 1")
+    cm_2predictors.ax_.set_xlabel("model2_subj-1_win-30")
+    cm_2predictors.ax_.set_ylabel("subj-1_win-30")
+    cm_2predictors.ax_.set_xticks([i for i in range(5)], ["wake", "N1", "N2", "N3", "REM"])
+    cm_2predictors.ax_.set_yticks([i for i in range(5)], ["wake", "N1", "N2", "N3", "REM"])
+
+    
 
     mutual_information = mutual_information_from_confmat(cm_cat)
     print("mutual information:", mutual_information)
@@ -107,14 +116,22 @@ def perform_comparison(prediction_dir: str):
 
     ## SUPERIMPOSE ALL PREDICTIONS
     dy = 0.02
-    plt.figure()
+    ygap = 8 #13
+    fig = plt.figure(figsize=(13,6))
+    ax = plt.subplot(111)
     x_ = np.arange(0, len(predictions_lists[0]))
     for i, predictions in enumerate(predictions_lists): 
         #plt.plot(predictions, label=txtfiles[i])
         #plt.scatter(x_, predictions*(dy*(len(predictions_lists)+15)) + dy*i, label=txtfiles[i], s=1)
-        plt.scatter(x_, predictions*(dy*13) + dy*i/1.6, label=txtfiles[i], s=1)
-    plt.yticks(ticks=[j*(dy*13) for j in range(5)], labels=["wake", "N1", "N2", "N3", "REM"])
-    plt.legend()
+        ax.scatter(x_, predictions*(dy*ygap) + dy*i/2, label=txtfiles[i], s=2)
+    ax.set_yticks(ticks=[j*(dy*ygap) for j in range(5)], labels=["wake", "N1", "N2", "N3", "REM"])
+    #ax.legend()
+    ax.set_xlabel("Epoch # (30 second interval)")
+    ax.set_ylabel("Predicted sleep stage")
+    #ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+    #ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.1),
+    ax.legend(loc='lower center', bbox_to_anchor=(0.5, +1.0), ncol=3, fancybox=True, shadow=False)
+    ax.set_title("Hypnogram comparison from different predictors", y=1.07)
 
     ## SUPERIMPOSE HYPNOGRAMS 
     # plt.figure()
@@ -139,6 +156,7 @@ def perform_comparison(prediction_dir: str):
     rects = ax.bar([i+1 for i in range(num_raters)], count_number_of_agreeers / len(max_agreeing_list) * 100) #, label=bar_labels, color=bar_colors)
     ax.bar_label(rects, padding=3, fmt="{:.1f}%")
     ax.set_title("Proportion of number of agreeers for each timestamp")
+    ax.set_xticks([int(i) for i in range(1, num_raters + 1)])
 
 
     # weird plot where they agree
@@ -164,12 +182,27 @@ def perform_comparison(prediction_dir: str):
 
     #print("COHENS MATRIX:\n", cohen_kappa_scores_matrix)
     #plt.figure()
-    cm_kappa = ConfusionMatrixDisplay(cohen_kappa_scores_matrix, display_labels=txtfiles).plot()
+    # # VVVVVV
+    cm_kappa = ConfusionMatrixDisplay(cohen_kappa_scores_matrix, display_labels=txtfiles).plot(xticks_rotation=10) #15
     cm_kappa.ax_.set_title("Cohen's kappa scores between raters")
+    for i in range(3):
+        for j in range(3):
+            cm_kappa.text_[i, j].set_fontsize(13)
 
     #plt.figure()
-    cm_agree = ConfusionMatrixDisplay(rater_agreement_scores_matrix, display_labels=txtfiles).plot()
+    cm_agree = ConfusionMatrixDisplay(rater_agreement_scores_matrix, display_labels=txtfiles).plot(xticks_rotation=10) #15
     cm_agree.ax_.set_title("Agreement between raters")
+    #cm_agree.ax_.set_xlabel("")
+    #plt.colorbar(cm_agree.figure_, fraction=0.046, pad=0.04)
+    #cm_agree.figure_.colorbar(cm_agree.confusion_matrix, fraction=0.046, pad=0.04)
+    #plt.colorbar(fraction=0.046, pad=0.04)
+    #cm_agree.figure_.set_size_inches(3,3)
+    #cm_agree.figure_.tight_layout()
+    for i in range(3):
+        for j in range(3):
+            cm_agree.text_[i, j].set_fontsize(13) #"x-large"
+            # cm_agree.text_[i, j] = ax.text(
+            #         j, i, format(cm[i, j], ".2g"), ha="center", va="center", color=color, size='x-large')
 
 
     ## TO SEE IF THERE IS ONE STAGE OF SLEEP WITH LESS AGREEMENT

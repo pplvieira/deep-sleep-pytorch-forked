@@ -1,0 +1,27 @@
+\section{Conclusion}
+
+%%a.What did you learn?
+%b.What could you do better? (What would you have done next if you had more time)? 
+%c.Why do you think it did not work if it that is the case?
+
+%d.If everything worked perfectly, what next steps would you suggest for follow-up work?
+
+%For full credit, discuss two extensions or improvements to your project with short justifications for  why  you  think  that  would  work  better  (improvements)  or  why  they  are  promising  extensions
+
+
+The goal of this project was to develop a classification model, either by traditional feature extraction, classification, or deep learning, to improve the accuracy of a SSVEP based BCI interface, on a public dataset \cite{wang2017benchmark}.
+
+In this project, the results relative to signal processing and feature extraction revealed the importance of these techniques, such as band-pass filtering and wavelet transforms, in improving signal quality, and how fundamental these steps are in traditional classifications.
+
+Two CNN architectures were developed and thoroughly tested, providing remarkably good results. We learned a lot about hyperparameter finetuning, common practices, CNN architectures used in EEG signal processing, namely for SSVEP, and further developed out skills with Pytorch. The finetuning process consists mostly of trial and error with educated guesses, but we found it relevant to see in real time how a change in the network's configuration affected its performance.
+
+Provided we had more time, we would first train the networks with more subjects, as due to a time and disk space shortage on the HPC system, only 10 of the 35 subjects were used to train all the networks. We would expect the accuracy to decrease a little when we train with all subjects. However, the learned models still provided good test accuracy on a 11th subject, so we could assume it didn't overfit completely to the 10 training subjects. 
+
+Finally, a suggested further development could be using a mix of end-to-end and classic feature extraction as a basis for the classification algorithm. This could incorporate the power of deep learning techniques with the model knowledge given by traditional features. Applying dimensionality reduction, via PCA for example, or with a learned autoencoder, could also produce good results and better understanding of the signal.
+
+Furthermore, the integration of adaptive learning mechanisms, that allow the personalization of the CNN's parameters and predictions based on individual user data, ensuring that the system is robust to different subjects and remains effective across a wide range of users
+
+
+
+
+

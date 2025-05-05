@@ -1,0 +1,27 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Abstract}{1}{section.1}%
+\contentsline {section}{\numberline {2}Introduction, motivation and literature review}{1}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Motivation and objectives}{1}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Alzheimer's disease}{1}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Neurostimulation}{1}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Sleep stages}{1}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Automatic sleep staging}{1}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}DRAFT}{1}{subsection.2.6}%
+\contentsline {section}{\numberline {3}Methods}{1}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Original pipeline}{1}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Network architecture}{2}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Steps of the pipeline}{3}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Modifications to the pipeline}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Additions to the pipeline}{4}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Pipeline features}{5}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Results and discussion}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Sleep staging results}{6}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Multi-rater comparison}{7}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Validation with ground truth dataset}{9}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Conclusion}{9}{section.5}%
+\contentsline {subsection}{\numberline {5.1}????}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Shortcomings of our approach}{9}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Future prospects}{9}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Objectives acheived ??}{9}{subsection.5.4}%
+\contentsline {section}{\numberline {}Acknowledgments}{9}{subsection.5.4}%
+\contentsline {section}{References}{10}{subsection.5.4}%

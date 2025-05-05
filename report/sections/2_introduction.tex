@@ -1,0 +1,57 @@
+\section{Introduction, motivation and literature review}
+% motivation
+% objective of my work. tipo porque estou aqui
+% INCLUDE OTHER MODELS BEING USED RIGHT NOW, ALEXANDERS AND NEWER ONES
+% shortcoming of them all and how they compare to the literature and how they present results
+
+
+% \subsection{Objectives}
+% The objectives of this project were to:
+% \begin{itemize}
+%     \itemsep-0.4em
+%     \item Literature review related to sleep, Alzheimer's disease, and neurostimulation.
+%     \item Learn about EEG automatic sleep stage detection/classification, using deep learning approaches
+%     \item Gain further experience with relevant python machine learning and deep learning packages such as Scikit-learn and Pytorch.
+%     \item Apply an existing automatic sleep classification algorithm on an existing sleep EEG dataset, and explore improvements to a model.
+%     \item Build uppon and develop a end to end pipeline for internal use for automatic sleep staging from EEG data.
+% \end{itemize}
+
+
+
+%\subsection{Previous Works} %state of the art
+
+\subsection{Motivation and objectives}
+% objetive of any medical intervention
+The final objetive of any medical intervention is to treat or prevent a disease, or at least to better the patient's quality of life. To acheive this, it is necessary to study the underlying disease ethiologies and pathophysiological mechanisms, in order to modify or interrupt the course of the disease to produce the healing outcomes desired or block unwanted ones.
+
+% alzheimers, neurostimulation and deep sleep + general objective
+With this in mind, and in the light of new reasearch that links Alzheimer's desease regression with neurostimulation as well as good quality deep sleep \cite{}, one goal of this project was to better understand these mechanisms, and how they relate to one another, and to the pathophysiology of Alzheimer's disease.
+
+% main technical goal
+The main technical goal of this project is to build uppon and apply a preexisting automatic sleep staging EEG pipeline, to eventually be used internally for a streamlined sleep staging setup. The goal is to eventually allow Optoceutics to quantify the amount of deep sleep that users of their product are getting, possibly to modify their product or treatment.
+
+
+\subsection{Alzheimer's disease}
+
+\subsection{Neurostimulation}
+
+\subsection{Sleep stages}
+
+\subsection{Automatic sleep staging}
+
+
+
+
+
+%==========================================================
+\subsection{DRAFT}
+\begin{equation}
+    \mathcal{S} = \{\textit{W, N1, N2, N3, REM}\}
+\end{equation}
+
+Predictions For each time step
+\begin{align}
+    \mathcal{Y} = \Bigl\{ y \in \mathbb{R}_{+}^{K}  \sum_i y_i = 1 \Bigr\} \\
+    \mathcal{Y} = \left\{ \left. y \in \mathbb{R}_{+}^{K} \right| \sum_i y_i = 1 \right\} , K = |\mathcal{S}| \\
+    argmax \; y: \mathcal{Y} \rightarrow \mathcal{S}
+\end{align}

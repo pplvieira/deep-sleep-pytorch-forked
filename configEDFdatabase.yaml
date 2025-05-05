@@ -6,7 +6,9 @@ data_loader:
   data:
     eval: 
     test:
-    - - sleepTrial1
+    # - - sleepTrial1
+    #   - test
+    - - sleepEDFdatabase
       - test
     train: 
   data_dir: ./data/processed
@@ -21,7 +23,8 @@ data_loader:
   train_fraction: null
   fs: 128
 exp:
-  name: my_experiment1 # my_experiment1
+  name: my_experiment2 # my_experiment1
+  #name: my_config
 loss:
   import: src.model.losses.temporal_crossentropy_loss
 lr_scheduler:
@@ -52,7 +55,8 @@ optimizer:
   import: torch.optim.SGD
 trainer:
   epochs: 20
-  log_dir: experiments/my_experiment1
+  log_dir: experiments/my_experiment2
+  #log_dir: experiments/my_experiment2
   monitor: min val_loss
   n_gpu: 1
   num_workers: 8 #128

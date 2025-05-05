@@ -1,0 +1,20 @@
+\section{Introduction and Motivation}
+
+Disabilities may arise from genetic conditions, illnesses, accidents, environmental factors, or unknown causes, exhibiting a wide range of symptoms and degrees of severity. Therefore, severe disabilities, especially those leading to complete loss of movement and communication, require the use of advanced assistive technologies. \cite{siribunyaphat2022steady}
+
+The field of brain-computer interfaces (BCIs), an emerging human-computer interaction technology used to communicate between the human brain and computers, has experienced significant advancements, due to the increasing availability of high-quality datasets and sophisticated machine learning algorithms. \cite{nicolas2012brain}
+
+Usually, BCIs consist of three main parts: brain signals and data acquisition, feature extraction and classification algorithm, and command translation and application. \cite{siribunyaphat2022steady}
+
+ One prominent domain within BCIs is the study of steady-state visually evoked potentials (SSVEPs), which are elicited by visual stimuli at a range of specific frequencies. SSVEP-based BCIs have garnered attention for their potential in applications such as assistive technologies, gaming, and rehabilitation. While traditional classification methods like support vector machines (SVMs) and linear discriminant analysis (LDA) have been extensively employed for SSVEP data, recent progress in deep learning offers a great opportunity to explore convolutional neural networks (CNNs) as an alternative.
+ 
+This report was  based on the dataset presented in "A Benchmark Dataset for SSVEP Based Brain-Computer Interfaces"\cite{wang2017benchmark}. It consisted of 64-channel EEG recordings from 35 healthy participants, which were engaged in a cue-guided target selection task using a 40-target speller interface.
+
+Each participant completed six blocks, with each block containing 40 trials corresponding to distinct targets. During the trials, participants focused on flickering stimuli displayed on a screen at frequencies ranging from 8 Hz to 15.8 Hz, with a 0.2 Hz interval. Each stimulus lasted 5s, and EEG data was synchronized with the onset and offset of the visual stimuli. The dataset was preprocessed to extract 6-second epochs and down-sampled to 250 Hz. 
+
+In our case, by using a CNN-based approach, we aimed to enhance classification performance and feature extraction.
+
+The motivation for this work emerged from two main goals: improving classification accuracy in SSVEP-based BCIs and demonstrating the potential of CNNs in processing neural signal data. Conventional methods often rely on manual features and domain expertise, which can limit scalability and adaptability. CNNs, on the other hand, have shown remarkable success in other domains such as image and speech recognition by autonomously learning feature representations.
+
+SSVEP-based BCIs provide a non-invasive communication method, however their practical implementation faces obstacles like noise, neural response variability, and the need for reliable classification techniques. By applying CNNs in this field, we aim to tackle these issues and expand the potential of SSVEP-based BCIs. This study also contributes to advancing deep learning applications in neurotechnology, fostering the development of innovative assistive solutions.
+

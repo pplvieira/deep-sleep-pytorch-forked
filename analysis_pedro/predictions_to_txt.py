@@ -95,6 +95,8 @@ def predictions_to_txt(eval_window, prediction_dir, output_dir, fid, begining_in
 
 
 
+# python3 -m analysis_pedro.predictions_to_txt --eval-window 30 --config configEDFdatabase.yaml --prediction-dir "experiments/my_experiment2/predictions-best_weights" --output-dir "experiments/my_experiment2/predictions-best_weights/predictions_txts"
+
 if __name__ == "__main__":
     # Parse arguments
     import argparse
@@ -114,6 +116,7 @@ if __name__ == "__main__":
     
     #prediction_dir = "C:/Users/Pedro/Desktop/Universidade/DTU 2A 1S spring/Specialcourse/deep-sleep-pytorch/experiments/my_experiment1/predictions-best_weights" #CHANGE
     prediction_dir = args.prediction_dir
+    output_dir = args.output_dir
     print("[PREDICTIONDIR]:", prediction_dir)
 
     subsets = ['test']
@@ -138,7 +141,7 @@ if __name__ == "__main__":
         # READ PREDICTION FILES
         eval_window = args.eval_window
         for fid in file_ids:
-            predictions_to_txt(eval_window, prediction_dir, fid, args.begining_index)
+            predictions_to_txt(eval_window, prediction_dir, output_dir, fid, args.begining_index)
 
 
 

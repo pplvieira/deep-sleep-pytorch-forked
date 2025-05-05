@@ -11,7 +11,9 @@
     "C4": [
         "EEG Pz-Oz"
     ],
-    "EMG": [],
+    "EMG": [
+        "EMG submental"
+    ],
     "EOGL": [
         "EOG horizontal"
     ],
@@ -32,8 +34,7 @@
         "EMG"
     ],
     "edfFiles": [
-        "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\SleepEDF-database\\edfs\\SC4001E0-PSG.edf",
-        "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\SleepEDF-database\\hypnograms\\SC4001EC-Hypnogram.edf"
+        "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\SleepEDF-database\\edfs\\SC4001E0-PSG.edf"
     ],
-    "pathname": "C:\\\\Users\\\\Pedro\\\\Desktop\\\\Universidade\\\\DTU 2A 1S spring\\\\Specialcourse\\\\SleepEDF-database"
+    "pathname": "C:\\Users\\Pedro\\Desktop\\Universidade\\DTU 2A 1S spring\\Specialcourse\\SleepEDF-database"
 }

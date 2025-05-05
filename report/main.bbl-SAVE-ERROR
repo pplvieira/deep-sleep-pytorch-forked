@@ -1,0 +1,71 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global/global}
+    \entry{Alexander2020}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=a276fd9e600bdb844802a30b819e7a6d}{%
+           family={Olesen},
+           familyi={O\bibinitperiod},
+           given={Alexander\bibnamedelima Neergaard},
+           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=b9334dcbed3f8fe51e01e537fe5599c7}{%
+           family={{J{\o{}}rgen Jennum}},
+           familyi={J\bibinitperiod},
+           given={Poul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=5347af02a65b38b554f279e7d7d094db}{%
+           family={Mignot},
+           familyi={M\bibinitperiod},
+           given={Emmanuel},
+           giveni={E\bibinitperiod}}}%
+        {{hash=b9a6f268931bef55ec9b78ce0876c72e}{%
+           family={Sorensen},
+           familyi={S\bibinitperiod},
+           given={Helge\bibnamedelimb Bjarup\bibnamedelima Dissing},
+           giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \strng{namehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
+      \strng{fullhash}{8fb3b6c6b83d0064e5d4e34bd602828b}
+      \strng{fullhashraw}{8fb3b6c6b83d0064e5d4e34bd602828b}
+      \strng{bibnamehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
+      \strng{authorbibnamehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
+      \strng{authornamehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
+      \strng{authorfullhash}{8fb3b6c6b83d0064e5d4e34bd602828b}
+      \strng{authorfullhashraw}{8fb3b6c6b83d0064e5d4e34bd602828b}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Sleep}
+      \field{number}{1}
+      \field{title}{{Automatic sleep stage classification with deep residual networks in a mixed-cohort setting}}
+      \field{volume}{44}
+      \field{year}{2021}
+      \field{pages}{zsaa161}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1093/sleep/zsaa161
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

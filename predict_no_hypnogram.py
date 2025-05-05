@@ -75,9 +75,10 @@ def main(config, resume):
                                 batch_size=dataset.batch_size,
                                 shuffle=False,
                                 #num_workers=20,
-                                num_workers=1,
+                                num_workers=1, 
                                 drop_last=False,
                                 pin_memory=True)
+        
         print("### len dataloader", len(data_loader))
 
         # Get raw predictions
@@ -88,7 +89,9 @@ def main(config, resume):
         print("\n[bar]", len(bar), len(data_loader)) #, type(bar))
         with torch.no_grad():
             for i, out in enumerate(bar):
+                print("[i, out]:", i, out["data"].shape, out["target"].shape, len(out["fid"])) #, out)
                 data = out['data']
+                print(" =>", i, data.shape)
                 data = torch.nan_to_num(data)#### !! REMOVE NANS
                 target = out['target'].cpu().numpy()
                 file_id = out['fid']
@@ -101,14 +104,15 @@ def main(config, resume):
                 output = model(data.to(device)).to(device)
                 print("[ ] Sent to device")
                 for j, fid in enumerate(file_id):
-                    print("[for j, fid in enumerate(file_id)]", i ,"|", j, fid)
+                    ##print("[for j, fid in enumerate(file_id)]", i ,"|", j, fid) ### costumava ter este
                     if i == 0 and j == 0:
                         current_subject = fid
                     if current_subject == fid:
                         targets.append(target[j, :])
                         predictions.append(output[j, :, :].softmax(dim=0).numpy())
                         # SOME PRINTS
-                        print("[@SOME PRINTS]", np.array(targets).shape, np.array(predictions).shape, "|", fid, j, "|", data.shape, output.shape, np.unique(output.numpy()), "|", np.unique(targets), np.unique(predictions))
+                        print("[@SOME PRINTS]", np.array(targets).shape, np.array(predictions).shape, "|", i, fid, j, "|", data.shape, output.shape) #, np.unique(output.numpy()), "|", np.unique(targets), np.unique(predictions))
+                        #print("[@SOME PRINTS]", np.array(targets).shape, np.array(predictions).shape, "|", fid, j, "|", data.shape, output.shape, np.unique(output.numpy()), "|", np.unique(targets), np.unique(predictions))
                         #print("[@SOME PRINTS]", np.array(targets).shape, np.array(predictions).shape, "|", fid, j, "|", data.shape, output.shape, np.unique(data.numpy()), np.unique(output.numpy()), "|", np.unique(targets), np.unique(predictions))
                     else:
                         # Save predictions as pickles with true and predicted labels for each subject as a separate file. Predictions are softmaxes every 1 second.
@@ -175,8 +179,8 @@ def main(config, resume):
                 labels = pickle.load(handle)
             t = np.concatenate(labels['targets'], axis=0)
             p = np.concatenate(labels['predictions'], axis=1)
-            print("[set targets]", t.shape, np.unique(t)) #(9000,)
-            print("[set predict]", p.shape, np.unique(p)) #(5, 9000)
+            print("[set targets]", t.shape, np.array(labels['targets']).shape, np.unique(t)) #(9000,)
+            print("[set predict]", p.shape, np.array(labels['predictions']).shape, np.unique(p), "from file", os.path.join(prediction_dir, fid + '.pkl')) #(5, 9000)
             # subset = row.Subset
             # t = np.concatenate(subjects[subset][fid]['true'], axis=0)
             # p = np.concatenate(subjects[subset][fid]['pred'], axis=1)

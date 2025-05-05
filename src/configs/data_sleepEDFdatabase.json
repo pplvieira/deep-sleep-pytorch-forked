@@ -2,7 +2,7 @@
     "COHORTS": {
         "sleepEDFdatabase": {
             "edf": "../SleepEDF-database/edfs",
-            "stage": "../SleepEDF-database/hypnograms"
+            "stage": ""
         }
     },
     "COHORT_OVERVIEW_FILE": [],
@@ -25,7 +25,7 @@
                 35
             ]
         },
-        "fs_resampling": 100,
+        "fs_resampling": 128, 
         "order": {
             "eeg": 4,
             "emg": 4,

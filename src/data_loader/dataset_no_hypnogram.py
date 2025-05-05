@@ -34,7 +34,8 @@ class MultiCohortDatasetNoHypnogram(Dataset):
         self.data = config.data_loader.data[subset]
         self.data_dir = config.data_loader.data_dir
         self.train_fraction = config.data_loader.train_fraction if subset == 'train' else None
-        self.fs = 128  # TODO: put into yaml
+        #self.fs = 128  # TODO: put into yaml
+        self.fs = config.data_loader.fs ### IMPLEMENTED MYSELF
         self.modalities = config.data_loader.modalities
         self.num_channels = len(self.modalities) + 1
         self.num_classes = config.data_loader.num_classes
@@ -136,8 +137,10 @@ class MultiCohortDatasetNoHypnogram(Dataset):
             self.df.HypnogramLength.values // self.mult_factor).astype(int)
         self.df['Length'] = self.length_recordings
         self.df['FileLength'] = self.df.HypnogramLength * 30 * self.fs
+        print("Lengths", self.df['Length'], self.df['FileLength'])
 
         self.indexes = [(fid, j * self.mult_factor + range(self.mult_factor)) for i, fid in zip(np.arange(self.num_subjects), self.df['FileID']) for j in np.arange(self.length_recordings[i])]
+        #print("\n--------------\n", self.indexes, "\n------------------")
 
         def get_h5(file):
             print("[@get h5]", file.lower(), "|", os.path.join(self.data_dir, 'h5', file.lower()))
@@ -154,6 +157,7 @@ class MultiCohortDatasetNoHypnogram(Dataset):
         memory = Memory(self.cache_dir, mmap_mode='r', verbose=0)
         get_data = memory.cache(get_h5) # REMOVED THIS
 
+        print("[] FileIDs: (lens)", len(self.df.FileID), len(self.df), "|", self.df.FileID)
         self.data = {r: None for r in self.df.FileID}
         self.hypnogram = {r: None for r in self.df.FileID}
 
@@ -161,13 +165,21 @@ class MultiCohortDatasetNoHypnogram(Dataset):
             data = ParallelExecutor(n_jobs=-1, prefer="threads")(total=len(self.df))(
                 delayed(get_data)(k + '.h5') for k in self.data.keys()
             )
+
+        with np.printoptions(precision=2, threshold=5, edgeitems=1):
+            data = [get_h5(k + '.h5') for k in self.data.keys()]
+        
+
+        #print("### type data:", type(data), len(data), len(data[0]), data[0][0], data[0][1].shape, data[0][2].shape)
+        #print("### type data:", data[0][0])
         for record, psg, hypnogram in tqdm(data, desc='Processing... '):
-            print("\n[ . ] APPENDING DATA TO RECORD", record, "|")
-            print(psg.shape, hypnogram.shape)
+            print("\n[ . ] APPENDING RECORD TO DATA (", record, ")")
+            print("!!!!>", psg.shape, hypnogram.shape)
             self.data[record] = psg
             self.hypnogram[record] = hypnogram
 
-        # print("[FINAL KEYES]", self.data.keys(), self.hypnogram.keys(), type(self.data["a"]), type(self.hypnogram["a"]))
+        print("[FINAL KEYES]", self.data.keys())
+        #print("[FINAL KEYES]", self.data.keys(), self.hypnogram.keys(), type(self.data["a"]), type(self.hypnogram["a"]))
         # print("[FINAL SIZES]", self.data["a"].shape, self.hypnogram["a"].shape)
         # print("")
 
@@ -190,7 +202,7 @@ class MultiCohortDatasetNoHypnogram(Dataset):
                 'position': position,
                 'data': torch.from_numpy(data.reshape((self.num_channels, -1))[np.newaxis, :, :]),
                 'target': torch.LongTensor(np.repeat(hypnogram, DEFAULT_HYP_LENGTH))}
-        #print("[OUT]", file_id, "|", position, "|", cohort, "|", data.shape, "|", hypnogram.data )
+        print("[ᛰᛰ OUT]", file_id, "|", position[1:-1], "|", cohort, "|", data.shape, self.hypnogram[file_id].shape, "|", data[:,0,0], hypnogram[:4])
         #print("[OUT]", out)
         return out
 
@@ -208,12 +220,12 @@ if __name__ == '__main__':
     print('Num workers: {}'.format(num_workers))
     config = process_config('./src/configs/exp03-frac100.yaml')
     s = datetime.now()
-    train_data = MultiCohortDataset(config, subset='train')
+    train_data = MultiCohortDatasetNoHypnogram(config, subset='train') ### REPLACED MultiCohortDataset
     data = next(iter(train_data))
     e = datetime.now()
     print('{}'.format(e - s))
-    eval_data = MultiCohortDataset(config, subset='eval')
-    test_data = MultiCohortDataset(config, subset='test')
+    eval_data = MultiCohortDatasetNoHypnogram(config, subset='eval')
+    test_data = MultiCohortDatasetNoHypnogram(config, subset='test')
 
     train_loader = DataLoader(train_data, batch_size=config.data_loader.batch_size.train,
                               shuffle=True, num_workers=num_workers, drop_last=True, pin_memory=True)
