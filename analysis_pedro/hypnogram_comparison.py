@@ -102,8 +102,10 @@ def perform_comparison(prediction_dir: str):
     print("CMATRIX:\n", cm_cat)
     cm_2predictors = ConfusionMatrixDisplay(cm_cat).plot()
     cm_2predictors.ax_.set_title("Confusion matrix of predictions between models 1 and 2, for subject 1")
-    cm_2predictors.ax_.set_xlabel("model2_subj-1_win-30")
-    cm_2predictors.ax_.set_ylabel("subj-1_win-30")
+    cm_2predictors.ax_.set_ylabel(txtfiles[0])
+    cm_2predictors.ax_.set_xlabel(txtfiles[1])
+    # cm_2predictors.ax_.set_xlabel("model2_subj-1_win-30")
+    # cm_2predictors.ax_.set_ylabel("subj-1_win-30")
     cm_2predictors.ax_.set_xticks([i for i in range(5)], ["wake", "N1", "N2", "N3", "REM"])
     cm_2predictors.ax_.set_yticks([i for i in range(5)], ["wake", "N1", "N2", "N3", "REM"])
 
@@ -185,8 +187,8 @@ def perform_comparison(prediction_dir: str):
     # # VVVVVV
     cm_kappa = ConfusionMatrixDisplay(cohen_kappa_scores_matrix, display_labels=txtfiles).plot(xticks_rotation=10) #15
     cm_kappa.ax_.set_title("Cohen's kappa scores between raters")
-    for i in range(3):
-        for j in range(3):
+    for i in range(n_files):
+        for j in range(n_files):
             cm_kappa.text_[i, j].set_fontsize(13)
 
     #plt.figure()
@@ -198,8 +200,8 @@ def perform_comparison(prediction_dir: str):
     #plt.colorbar(fraction=0.046, pad=0.04)
     #cm_agree.figure_.set_size_inches(3,3)
     #cm_agree.figure_.tight_layout()
-    for i in range(3):
-        for j in range(3):
+    for i in range(n_files):
+        for j in range(n_files):
             cm_agree.text_[i, j].set_fontsize(13) #"x-large"
             # cm_agree.text_[i, j] = ax.text(
             #         j, i, format(cm[i, j], ".2g"), ha="center", va="center", color=color, size='x-large')

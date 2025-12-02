@@ -134,7 +134,7 @@ OR
 11. (Optional) Run `python3 analysis_pedro\display_hypnogram.py <PREDICTION.pkl filepath>` to display the predicted sleep staging (predicted hypnogram) and probabilities for each timestamp. With `--eval-window 30` (size of moving window) and `--begining-index 0` (instant where sleep actually begins) as costumizable arguments.
 12. Run `python3 -m analysis_pedro.predictions_to_txt --eval-window 30` to apply the moving eval-window on the predictions made before, and write a txt file with the sleep stage predicted for each epoch. These files appear in `\experiments\my_experiment1\predictions-best_weights\predictions_txts`. 
     - Full: `python3 -m analysis_pedro.predictions_to_txt --eval-window 30 --config configEDFdatabase.yaml --prediction-dir "experiments/my_experiment2/predictions-best_weights" --output-dir "experiments/my_experiment2/predictions-best_weights/predictions_txts"`
-13. (Optional) Place any number of files in the same format as `predictions.txt`, from multiple predictors/different pipelines, but FOR THE SAME SLEEP EDF DATA (can have different sizes because of different window sizes). Run `python3 analysis_pedro\hypnogram_comparison.py --folder "experiments\my_experiment2\predictions-best_weights\predictions_txts"` This performs multi-rater comparisons for the same sleep data.
+13. (Optional) Place any number of files in the same format as `predictions.txt`, from multiple predictors/different pipelines, but FOR THE SAME SLEEP EDF DATA (can have different sizes because of different window sizes). Run `python3 analysis_pedro\hypnogram_comparison.py --folder "experiments\my_experiment1\predictions-best_weights\predictions_txts"` This performs multi-rater comparisons for the same sleep data.
 
 
 BATCH FILES

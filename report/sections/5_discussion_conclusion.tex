@@ -1,22 +1,68 @@
 \section{Conclusion}
 
-With all this, and given the lack of a true label on the sleep EEG data acquired, the multi-rater ensemble-like setup is not only satisfactory as a quick and effective automatic classification setup, but also demonstrated quite good levels of agreement between multiple models.
 
 
-\subsection{????}
+%\subsection{????}
 
 
-\subsection{Shortcomings of our approach} % no GT
+\subsection{Shortcomings of this approach} % no GT
+% bootstrap
+Even though the results were promising and the pipeline performs as intended, the implementation was strongly bootstrapped given all the limitations and incompatibilities between all the moving parts. Some incompatibilities were ignored or overwritten, and there were no real validated results and very little data.
+
+% didnt have PSG data
+Arguably the most important limitation with this implementation is that the automatic sleep staging algorithm in \cite{Alexander2020} was trained on PSG data, namely central EEG, left and right EOG, and a single submentalis EMG. The prediction algorithm expected 2 time-series channels of EEG data, one of EOG and another of chin EMG. However, the data we had access to only had scalp EEG recordings, meaning that a suspected 1/4 of the data (corresponding to the chin EMG) used for the predictions was blanck, most certainly leading to inaccurate results. 
+
+% still had good results though
+Nonetheless, the predictions had good agreement with the predictions from the Yasa model, which was trained only on EEG data, as well as good validated results on the sleepEDFdatabase simple EEG data.
+
+% not that much data or need to validate at least some
+Another consideration is that only 2 sleep recording were used during the course of this project. To test the feasibility and replicability of this pipeline, more data is needed, to produce mass data sleep stage predictions on Optoceutics' data.
+
+% all boils down to lack of validation
+In summary, there is a just a lack of validation in this pipeline. Even though each of the components (a standardized overnight EEG setup, a automatic sleep staging pipeline, and a data manipulation and visualization wrapper) are all validated or work as intended by themselves, there is no certainty that the EEG data gathered is adequate enough for the prediction model. There is no ground truth to compare out predictions in this setting to, and very little sleep data to make a statistical inter-rater comparison.
+
+% lack of clinical usage
+Finally, as has been reported in the literature, even tough automatic sleep staging with computational tools provides a massive improvement in throughput and labeling time, with accuracies close to those of manual annotators, it still hasn't been widely used in clinical applications \cite{2022automaticEEG}, which might be another barrier of this technology.  
 
 
 \subsection{Future prospects}
+% apply on more data + validate on more data
+The first future prospect would be to apply the pipeline on a ever-increasing internal database of sleep EEG recordings. A lot of consideration was taken into making it as streamlined as possible to add more sleep EDF files and extract predictions and perform data analysis on those.
+If given more time, it would also make sense to validate this pipeline on more than just one sleep recording from the sleepEDFdatabase, or other EEG based annotated sleep staging dataset, to get a better idea of the generalization capability of this model.
+
+% try another model
+The prediction model used was also the best model made available in \cite{Alexander2020}, with no finetuning. However, the pipeline is built to accept any pretrained prediction model as long as the input and output have the same shape as the one used here. Therefore, it would eventually be beneficial to either swap the prediction model for another one developed in the literature; finetune the model in \cite{Alexander2020} to our data; or develop and train a new model from scratch on validated data with the same EEG setup as the one used internally.
 
 
-\subsection{Objectives acheived ??}
+% eventually get it validated on our data
+It would eventually be beneficial to have our automatic sleep staging validated by a professional. I.e. having a trained technician manually annotate one of the sleep EEGs used here and statistically comparing it with the automatic predictions. 
 
 
 
-% ===========================================
-\section*{Acknowledgments}
-\addcontentsline{toc}{section}{\protect\numberline{}Acknowledgments}
+\subsection{Objectives acheived}
+% theoretical objectives
+The theoretical objectives of this project were certainly acheived, with additional insight gained into the mechanisms of Alzheimer's disease, neurostimulation and the glymphatic system. But most importantly, into sleep studies, automatic sleep staging in the literature and the importance of sleep in Alzheimer's disease pathophysiology.
 
+% pipeline developed
+The pipeline wrapper developed provides easy to use sequencial instructions and commands, to apply automatic sleep staging, visualize results and perform multirater comparison. The multi-rater analysis as well as the basic validation with the sleepEDFdatabase provided good levels of agreement, giving us some light into the accuracy of the whole setup.
+
+% multirater setup is good
+With all this, and given the lack of a true label on the sleep EEG data acquired, the multi-rater ensemble-like setup is not only satisfactory as a quick and effective automatic classification setup, but also demonstrated quite good levels of agreement between multiple models.
+
+
+
+% ======================================================================================
+\section*{Code availability}
+\addcontentsline{toc}{section}{Code availability}
+All the code developed, the wrapper pipeline and instructions can be found in the GitHub repository \\
+\href{https://github.com/pplvieira/deep-sleep-pytorch-forked}{https://github.com/pplvieira/deep-sleep-pytorch-forked}
+
+% ======================================================================================
+\section*{Disclaimer}
+\addcontentsline{toc}{section}{Disclaimer}
+% \addcontentsline{toc}{section}{\protect\numberline{}Acknowledgments}
+% \addcontentsline{toc}{section}{References}
+
+A small disclaimer regarding copyright and plagiarism: this project was done with close colaboration with a collegue, Patricia Almeida also from DTU, and our reports will have some overlap in the dataset and overall approach. We each worked independently by applying 2 different automatic sleep staging pipelines on the same data, and part of the results and discussion will overlap on the multi-rater part of our report, as the predictions from both pipelines were merged to produce some of the results. This should not be considered plagiarism.
+
+%I would like to thank everyone in Optoceutics for the opportunity to do this practical project course with them,

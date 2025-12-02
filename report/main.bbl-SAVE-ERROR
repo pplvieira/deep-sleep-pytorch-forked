@@ -19,6 +19,168 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{belonosov2023sleepeegpy}{article}{}{}
+      \name{author}{8}{}{%
+        {{hash=bc4856c15ce32ccf4e16d34ecae53e33}{%
+           family={Belonosov},
+           familyi={B\bibinitperiod},
+           given={G},
+           giveni={G\bibinitperiod}}}%
+        {{hash=0c1c3ea67b5f49616ddd6ea611f40dea}{%
+           family={Falach},
+           familyi={F\bibinitperiod},
+           given={R},
+           giveni={R\bibinitperiod}}}%
+        {{hash=e33c9e52983b1cb55192a0b70d5441a8}{%
+           family={Schmidig},
+           familyi={S\bibinitperiod},
+           given={JF},
+           giveni={J\bibinitperiod}}}%
+        {{hash=8e48d11ce8622ac9f425ca290cb915fe}{%
+           family={Aderka},
+           familyi={A\bibinitperiod},
+           given={M},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c855aeea229134ee49c5ed49193b4008}{%
+           family={Zhelezniakov},
+           familyi={Z\bibinitperiod},
+           given={V},
+           giveni={V\bibinitperiod}}}%
+        {{hash=c4c7f2a2f8b846648c3d6d001de68c16}{%
+           family={Shani-Hershkovich},
+           familyi={S\bibinithyphendelim H\bibinitperiod},
+           given={R},
+           giveni={R\bibinitperiod}}}%
+        {{hash=f0692d27fae26c4f6051928965686b3c}{%
+           family={Bar},
+           familyi={B\bibinitperiod},
+           given={E},
+           giveni={E\bibinitperiod}}}%
+        {{hash=4cc03c145668f9bf68e8502d5a9dfb06}{%
+           family={Nir},
+           familyi={N\bibinitperiod},
+           given={Y},
+           giveni={Y\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cold Spring Harbor Laboratory}%
+      }
+      \strng{namehash}{94ac026e9767e6ee7c9a3bb147e939e5}
+      \strng{fullhash}{44b828580c63333d4da2cd4d6b82e69e}
+      \strng{fullhashraw}{44b828580c63333d4da2cd4d6b82e69e}
+      \strng{bibnamehash}{94ac026e9767e6ee7c9a3bb147e939e5}
+      \strng{authorbibnamehash}{94ac026e9767e6ee7c9a3bb147e939e5}
+      \strng{authornamehash}{94ac026e9767e6ee7c9a3bb147e939e5}
+      \strng{authorfullhash}{44b828580c63333d4da2cd4d6b82e69e}
+      \strng{authorfullhashraw}{44b828580c63333d4da2cd4d6b82e69e}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{bioRxiv}
+      \field{title}{SleepEEGpy: a Python-based software wrapper package to organize preprocessing, analysis, and visualization of sleep EEG data}
+      \field{year}{2023}
+      \field{pages}{2023\bibrangedash 12}
+      \range{pages}{-10}
+    \endentry
+    \entry{2000sleepEDForiginal}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=99616970ac12a8d11ff57702aed128e7}{%
+           family={Kemp},
+           familyi={K\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=19194fd3f40465b127c5a8f1eef5d6d5}{%
+           family={Zwinderman},
+           familyi={Z\bibinitperiod},
+           given={A.H.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bdfa3971be319f57267cc39da06327d5}{%
+           family={Tuk},
+           familyi={T\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=6452027631c98c975c3ec83d2841d1fd}{%
+           family={Kamphuisen},
+           familyi={K\bibinitperiod},
+           given={H.A.C.},
+           giveni={H\bibinitperiod}}}%
+        {{hash=34674f53b351875247e453fafc78ed37}{%
+           family={Oberye},
+           familyi={O\bibinitperiod},
+           given={J.J.L.},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{6720549ef9b967b6f841b6d147c67a43}
+      \strng{fullhash}{ed04c284800cd2941197c359ad3346b8}
+      \strng{fullhashraw}{ed04c284800cd2941197c359ad3346b8}
+      \strng{bibnamehash}{6720549ef9b967b6f841b6d147c67a43}
+      \strng{authorbibnamehash}{6720549ef9b967b6f841b6d147c67a43}
+      \strng{authornamehash}{6720549ef9b967b6f841b6d147c67a43}
+      \strng{authorfullhash}{ed04c284800cd2941197c359ad3346b8}
+      \strng{authorfullhashraw}{ed04c284800cd2941197c359ad3346b8}
+      \field{extraname}{1}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE Transactions on Biomedical Engineering}
+      \field{number}{9}
+      \field{title}{Analysis of a sleep-dependent neuronal feedback loop: the slow-wave microcontinuity of the EEG}
+      \field{volume}{47}
+      \field{year}{2000}
+      \field{pages}{1185\bibrangedash 1194}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1109/10.867928
+      \endverb
+      \keyw{Feedback loop;Electroencephalography;Neurofeedback;Hospitals;Biomedical measurements;Power measurement;Frequency measurement;Maximum likelihood detection;Maximum likelihood estimation;Skull}
+    \endentry
+    \entry{kemp2018sleepEDFwebsite}{article}{}{}
+      \name{author}{5}{}{%
+        {{hash=b1b92670f4ed756a73c71585175cfebf}{%
+           family={Kemp},
+           familyi={K\bibinitperiod},
+           given={Bob},
+           giveni={B\bibinitperiod}}}%
+        {{hash=7cd39cabee72574dee927034d3957896}{%
+           family={Zwinderman},
+           familyi={Z\bibinitperiod},
+           given={Aeilko},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bdfa3971be319f57267cc39da06327d5}{%
+           family={Tuk},
+           familyi={T\bibinitperiod},
+           given={B},
+           giveni={B\bibinitperiod}}}%
+        {{hash=68e1f49eb5e5edbddcf0945e69e1cb38}{%
+           family={Kamphuisen},
+           familyi={K\bibinitperiod},
+           given={H},
+           giveni={H\bibinitperiod}}}%
+        {{hash=638dd7756bbdee0ed6b28484e2d405ea}{%
+           family={Oberyé},
+           familyi={O\bibinitperiod},
+           given={J},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{f80265c344913b89f2ab23edbf9a9e68}
+      \strng{fullhash}{7e8ba147ca1b689e37c12f7b3fb1f5d0}
+      \strng{fullhashraw}{7e8ba147ca1b689e37c12f7b3fb1f5d0}
+      \strng{bibnamehash}{f80265c344913b89f2ab23edbf9a9e68}
+      \strng{authorbibnamehash}{f80265c344913b89f2ab23edbf9a9e68}
+      \strng{authornamehash}{f80265c344913b89f2ab23edbf9a9e68}
+      \strng{authorfullhash}{7e8ba147ca1b689e37c12f7b3fb1f5d0}
+      \strng{authorfullhashraw}{7e8ba147ca1b689e37c12f7b3fb1f5d0}
+      \field{extraname}{2}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Physionet org}
+      \field{title}{Sleep-edf database expanded}
+      \field{year}{2018}
+    \endentry
     \entry{Alexander2020}{article}{}{}
       \name{author}{4}{}{%
         {{hash=a276fd9e600bdb844802a30b819e7a6d}{%
@@ -26,9 +188,9 @@
            familyi={O\bibinitperiod},
            given={Alexander\bibnamedelima Neergaard},
            giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
-        {{hash=b9334dcbed3f8fe51e01e537fe5599c7}{%
-           family={{J{\o{}}rgen Jennum}},
-           familyi={J\bibinitperiod},
+        {{hash=58a0af76732f2c6c23c79fb6863f1aea}{%
+           family={Jorgen\bibnamedelima Jennum},
+           familyi={J\bibinitperiod\bibinitdelim J\bibinitperiod},
            given={Poul},
            giveni={P\bibinitperiod}}}%
         {{hash=5347af02a65b38b554f279e7d7d094db}{%
@@ -43,20 +205,20 @@
            giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
       }
       \strng{namehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
-      \strng{fullhash}{8fb3b6c6b83d0064e5d4e34bd602828b}
-      \strng{fullhashraw}{8fb3b6c6b83d0064e5d4e34bd602828b}
+      \strng{fullhash}{5a4f1ebb930aeb82a455040aca9e6321}
+      \strng{fullhashraw}{5a4f1ebb930aeb82a455040aca9e6321}
       \strng{bibnamehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
       \strng{authorbibnamehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
       \strng{authornamehash}{5efed3d9e3d7004cdcfe42cf7fb4691e}
-      \strng{authorfullhash}{8fb3b6c6b83d0064e5d4e34bd602828b}
-      \strng{authorfullhashraw}{8fb3b6c6b83d0064e5d4e34bd602828b}
+      \strng{authorfullhash}{5a4f1ebb930aeb82a455040aca9e6321}
+      \strng{authorfullhashraw}{5a4f1ebb930aeb82a455040aca9e6321}
       \field{sortinit}{O}
       \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Sleep}
       \field{number}{1}
-      \field{title}{{Automatic sleep stage classification with deep residual networks in a mixed-cohort setting}}
+      \field{title}{Automatic sleep stage classification with deep residual networks in a mixed-cohort setting}
       \field{volume}{44}
       \field{year}{2021}
       \field{pages}{zsaa161}
@@ -64,6 +226,75 @@
       \verb{doi}
       \verb 10.1093/sleep/zsaa161
       \endverb
+    \endentry
+    \entry{2021yasa}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=b0584d34f170ae21796424e142fbc386}{%
+           family={Vallat},
+           familyi={V\bibinitperiod},
+           given={Raphael},
+           giveni={R\bibinitperiod}}}%
+        {{hash=dbe630a9d476d8aadc35b67316fe2a2a}{%
+           family={Walker},
+           familyi={W\bibinitperiod},
+           given={Matthew\bibnamedelima P},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \name{editor}{3}{}{%
+        {{hash=1016cec413c17367e08a5b9d93633365}{%
+           family={Peyrache},
+           familyi={P\bibinitperiod},
+           given={Adrien},
+           giveni={A\bibinitperiod}}}%
+        {{hash=9b1edd08c5008862303b76aa6795d1ab}{%
+           family={BÃ¼chel},
+           familyi={B\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod}}}%
+        {{hash=8ea40905091f162107490e1fba8e363a}{%
+           family={Bagur},
+           familyi={B\bibinitperiod},
+           given={Sophie},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {eLife Sciences Publications, Ltd}%
+      }
+      \strng{namehash}{d332b87ecaed9637a2653e74fab16208}
+      \strng{fullhash}{d332b87ecaed9637a2653e74fab16208}
+      \strng{fullhashraw}{d332b87ecaed9637a2653e74fab16208}
+      \strng{bibnamehash}{d332b87ecaed9637a2653e74fab16208}
+      \strng{authorbibnamehash}{d332b87ecaed9637a2653e74fab16208}
+      \strng{authornamehash}{d332b87ecaed9637a2653e74fab16208}
+      \strng{authorfullhash}{d332b87ecaed9637a2653e74fab16208}
+      \strng{authorfullhashraw}{d332b87ecaed9637a2653e74fab16208}
+      \strng{editorbibnamehash}{fe6e7ba7c73cfffa297f2f088884a1bb}
+      \strng{editornamehash}{fe6e7ba7c73cfffa297f2f088884a1bb}
+      \strng{editorfullhash}{fe6e7ba7c73cfffa297f2f088884a1bb}
+      \strng{editorfullhashraw}{fe6e7ba7c73cfffa297f2f088884a1bb}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The clinical and societal measurement of human sleep has increased exponentially in recent years. However, unlike other fields of medical analysis that have become highly automated, basic and clinical sleep research still relies on human visual scoring. Such human-based evaluations are time-consuming, tedious, and can be prone to subjective bias. Here, we describe a novel algorithm trained and validated on +30,000 hr of polysomnographic sleep recordings across heterogeneous populations around the world. This tool offers high sleep-staging accuracy that matches human scoring accuracy and interscorer agreement no matter the population kind. The software is designed to be especially easy to use, computationally low-demanding, open source, and free. Our hope is that this software facilitates the broad adoption of an industry-standard automated sleep staging software package.}
+      \field{issn}{2050-084X}
+      \field{journaltitle}{eLife}
+      \field{month}{11}
+      \field{title}{An open-source, high-performance tool for automated sleep staging}
+      \field{volume}{10}
+      \field{year}{2021}
+      \field{pages}{e70092}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.7554/eLife.70092
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.7554/eLife.70092
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.7554/eLife.70092
+      \endverb
+      \keyw{automated sleep staging,machine-learning,sleep scoring,algorithm,YASA,NREM sleep,REM sleep,slow wave,sleep spindle,sleep apnea}
     \endentry
   \enddatalist
 \endrefsection

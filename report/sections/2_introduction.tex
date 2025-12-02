@@ -25,33 +25,122 @@
 The final objetive of any medical intervention is to treat or prevent a disease, or at least to better the patient's quality of life. To acheive this, it is necessary to study the underlying disease ethiologies and pathophysiological mechanisms, in order to modify or interrupt the course of the disease to produce the healing outcomes desired or block unwanted ones.
 
 % alzheimers, neurostimulation and deep sleep + general objective
-With this in mind, and in the light of new reasearch that links Alzheimer's desease regression with neurostimulation as well as good quality deep sleep \cite{}, one goal of this project was to better understand these mechanisms, and how they relate to one another, and to the pathophysiology of Alzheimer's disease.
+With this in mind, and in the light of new reasearch that links Alzheimer's desease regression with neurostimulation as well as good quality deep sleep \cite{2019sleepCausesAD, nedergaard2020glymphaticFailure,2014sleepAD}, one goal of this project was to better understand these mechanisms, and how they relate to one another, and to the pathophysiology of Alzheimer's disease.
+
+% importance of automatic sleep staging
+Manual annotation of sleep stages from polysomnography data is very time consuming, requires trained professionals and can be subject to human bias \cite{2022automaticEEG}. In fact multiple stidies have shown that there is a considerable difference in how different physicians rate sleep stages \cite{Alexander2020}. With this, the need for automatic, standardized sleep staging arises, essencially mitigating all these limitations as long as the predictions are accucate enough.
 
 % main technical goal
-The main technical goal of this project is to build uppon and apply a preexisting automatic sleep staging EEG pipeline, to eventually be used internally for a streamlined sleep staging setup. The goal is to eventually allow Optoceutics to quantify the amount of deep sleep that users of their product are getting, possibly to modify their product or treatment.
+The main technical goal of this project is to build uppon and apply a preexisting automatic sleep staging EEG pipeline, to be used internally for a streamlined automatic sleep staging setup. The objective is to eventually allow Optoceutics to quantify the amount of deep sleep that users of their product are getting, for research or clinical applications, possibly to modify their product or treatment.
 
 
-\subsection{Alzheimer's disease}
 
-\subsection{Neurostimulation}
+\subsection{Alzheimer's disease, glymphatic system and neurostimulation}
+% AD GENERAL
+Alzheimer's disease (AD), the most common form of dementia, is a complex disease, whose thourough pathophysiological description is beyond the scope of this project. Symptoms can include problems with language, disorientation, mood swings, loss of motivation, self-neglect, and behavioral issues \cite{who2023}. The causes and pathophysiology are not fully understood, but the deposition abnormal amounts of misfolded amyloid beta (A$\beta$) in the form of amyloid plaques or tau proteins, eventually leads to atrophy of brain regions and loss of brain function \cite{nhs2021}.
 
-\subsection{Sleep stages}
+% glymphatic system
+Research from the past decade pointed to the existance of a glymphatic system in the brain, which is a waste clearing system within the central nervous system, responsible for clearing proteins and metabolites \cite{nedergaard2020glymphaticFailure, jessen2015glymphaticGuide}. This system, promotes the movement of cerebrospinal fluid in the central nervous system, essencially "flushing" the intersticial fluid, removing debris and, most importantly, pathogenic proteins such as amyloid \cite{2024gammaClearance}.
+
+% sleep
+Reasearch also points that this system is most active during sleep \cite{jessen2015glymphaticGuide}, and is responsible for clearing potencially neurotoxic products like the amyloid plaques described \cite{nedergaard2020glymphaticFailure, 2018glymphaticDementia}. On the other hand, the deposition of amyloid has also been shown to reduce sleep quality, worsening sleep-wake fragmentation \cite{2014sleepAD}, in a reciprocal cycle that speeds the neuron degeneration. 
+
+
+% importance of activating system
+With all this reasearch, we conclude that ensuring the normal functioning of the glymphatic system is essencial for the prevention or retardation of early onset dementia. This makes the failure of the glymphatic system a terapeutical targetable pathway for dementia, and how to maintain a healthy glymphatic system has been the subject of recent studies.
+
+
+% neurostimulation
+%Maintaining a healthy sleep life is one way of maintaining a functioning healty glymphatic system. 
+In addition, more recent research points to the fact that neurostimulation in the gamma band (20-50Hz, or 40Hz) also stimulates the system, promoting the clearance of the neurotoxic compounds responsible for AD and attenuating the pathological progression of the disease \cite{2024gammaClearance, 2016gammaAttenuates}.
+Optoceutics is harnessing the therapeutic potential of this research via the development of a 40Hz stimulation desk lamp.
+
+
+
+
+\subsection{Sleep studies and sleep stages}
+% sleep
+As mentioned, good quality sleep plays a major role in the healthy functioning of the glymphatic system, while the progression of AD has a detrimental impact on sleep quality. Maintaining a healthy sleep life and quantifying/describing the sleep one is getting can be a targetable impactfull therapeutic action in the course of AD.
+
+% briefly explain sleep stages
+Sleep in humans goes through a series of so called phases (or sleep stages) in a cycle, averaging 90 minutes per cycle  
+\cite{2014sleepAD, 2012AASMManualForSleepScoring}. 
+Each phase is characterized by a base frequency of neuron activation, and some key structures in the brain that are active in that stage and undergo functional changes. 
+Traditionally, there are 5 sleep stages: wake, N1, N2, N3 and REM (rapid eye movement). N1 to N3, which account for 75\% of sleep time, are considered non-REM sleep, and go from light to deep sleep. 
+
+
+
+% importance of some sleep stages on health especially alzheimers
+Sleep quality, sleep duration and time spent on each sleep phase can be altered by a number of pathologies like depression, age, medication or stress.
+In AD, a polysomnography usually presents itself with decreased REM sleep, prolonged REM latency, increased proportions of stages N1 and N2 non-REM sleep, and increased sleep fragmentation, leading to an overall decrease in sleep duration \cite{2014sleepAD}. REM and non-REM sleep are also responsible for consolidating memories, so the worsening sleep quality associated with AD explains this symptom \cite{2014sleepAD}.
+
+% why do sleep studies
+A overnight sleep study can be prescribed by a physician for a number of reasons, like in cases of sleep apnea, extreme insomnia, not getting enough REM or deep sleep, and other suspected sleeping/wakefullness disorders \cite{2012AASMManualForSleepScoring}.
+% PSG
+Typical sleep studies involve full-night polysomnography (PSG) which includes electroencephalography (EEG), electrooculography (EOG), electromyography (EMG), electrocardiography (ECG), thoraco-abdominal inductance plethysmography, oronasal thermal flow, nasal pressure, and blood saturation recordings, as recommended by \cite{2012AASMManualForSleepScoring,Alexander2020}. 
+
+
+% hypnogram
+A common result of sleep studies is called a hypnogram, which is a time series of equaly spaced time intervals (usually 30s) of sleep and the corresponding sleep stage associated with that interval in time. 
+% need for sleep stagin
+Sleep staging, i.e. finding in which periods of one's night they were in each stage of sleep, can be used to understand if the patient is getting enough REM and deep sleep, or diagnose sleep disorders.
+% manual labeling + problems
+Traditionally, trained professionals analyze polysomnography data and manually annotate in which time periods the person was awake, in light, deep or REM sleep. They take in consideration the prediod in the data before and after each instant, breathing/heart rate/movement patterns, as well as external events to arrive at their predicted hypnogram \cite{2012AASMManualForSleepScoring}. 
+As mentioned before, this process is labor intensive and requires trained professionals that are sometimes prone to bias and inter-rater variability \cite{Alexander2020,2022automaticEEG}. Therefore, the need for automatic, fast and reliable automatic sleep staging with computational tools arises.
+
+
+
+
 
 \subsection{Automatic sleep staging}
+\label{section:automatic_sleep_staging}
+% general formalization of phi function
+The general definition of automatic sleep staging is finding (or learning) a general function $\Phi$, that maps the time series of the sleep data, into a series of probabilities of predicted labels for each time point. I.e., and using the notation similar to the one in \cite{Alexander2020}, for a sleep recording with $C$ channels over $T$ time points, at a sampling frequency of the data of $f_s$, with $K$ possible labels for each time point: $\Phi:\mathbb{R}^{C \times T} \rightarrow \mathbb{R}^{K \times T}$. To be even more precise, we aggregate predictions for every second, and usually report predictions for $\tau$ second window (usually $\tau=30$s), not necessarily for every time point, so:
+\begin{equation}
+    \Phi:\mathbb{R}^{C \times T} \rightarrow \mathbb{R}^{K \times \frac{T}{\tau f_s}}
+    \label{eq:automatic_sleep_staging_PHI_definition}
+\end{equation}
 
+We can also define $N$ as the number of second-wise predictions in the whole time series: $N = T / f_s$.
 
+% attempts to find function
+Several methods have been proposed in the literature for finding a function $\Phi$ that satisfies produced satisfactory predictions, all the way from classical signal processing to machine and deep learning algorithms. 
+Phan \textit{et al} (2022) \cite{2022automaticEEG} provides an in depth review of almost 30 state of the art attempts of automatic sleep staging on EEG data. Most used deep learning approaches to learn a general function $\Phi$ automatically: given the data and the corresponding sleep stage for each time stamp (i.e. the manually labeled hypnogram), a machine learning algorithm learns the underlying pattern in the data and is able to accurately predict the sleep staging. Most papers cited in \cite{2022automaticEEG} use a mixture of Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs), and are evaluated in several benchmark labeled sleep staging datasets, with reported Cohen's kappa scores of more than 0.75 on almost every one, which is remarkably accurate.
+
+% improvements
+CNNs are usually used to learn some lower dimensional representation of the raw data, and RNNs (like LSTMs) are used to perform the sequence classification, taking in consideration past and future epochs to classify the current one. Skip connections, data augmentation and batch normalization, as well as using more long-range dependencies between the epochs have all been shown to improve prediction results, even with few labeled hypnograms or minimalist data gathering setups \cite{Alexander2020,2022automaticEEG,2020tinysleepnet}.
+
+% tiny nets
+Recent unconventional approaches have tried to develop accurate prediction models with smaller sizes, providing higher throughput and faster training time on minimalist datasets. For instance, TinySleepNet \cite{2020tinysleepnet} uses single channel EEG recordings to efficiently perform the sleep staging, with kappa scores of more than 0.75 in every setting and cohort tested. 
+
+% explicaçao da nossa pipeline
+The research in \cite{Alexander2020}, which will be better explained in section \ref{section:original_pipeline} and was the basis of this project, used a state of the art combination of CNNs and RNNs with several improvements. The model was trained in a multi-cohort setup with thousands of polysomnography recordings in different settings, resulting in good accuracies and quite good generalization capabilities. 
 
 
 
 %==========================================================
-\subsection{DRAFT}
-\begin{equation}
-    \mathcal{S} = \{\textit{W, N1, N2, N3, REM}\}
-\end{equation}
+% \subsection{DRAFT}
+% \begin{align}
+%     \mathcal{S} = \{\textit{W, N1, N2, N3, REM}\} \\
+%     y_k^{(i)} = \text{probability of sleep stage k at time step i} \rightarrow \mathbf{y} \in \mathbb{R}^{K \times N} \\
+%     y^{\prime} \ _k^{(n)} = \frac{1}{\tau} \sum_{i=\tau(n-1)+1}^{\tau n} y_k^{(i)} = \text{ average probability of sleep stage k over the n-th window} \rightarrow \mathbf{y^{\prime}} \in \mathbb{R}^{K \times N/\tau} \\
+%     s^{\prime} \ ^{(n)} = \mathcal{S}_{\argmax_{k} \left(y^{\prime} \ _k^{(n)} \right)} = \text{predicted label for the n-th window} \rightarrow \mathbf{s^{\prime}} \in \mathcal{S}^{N/\tau}
+% \end{align}
 
-Predictions For each time step
-\begin{align}
-    \mathcal{Y} = \Bigl\{ y \in \mathbb{R}_{+}^{K}  \sum_i y_i = 1 \Bigr\} \\
-    \mathcal{Y} = \left\{ \left. y \in \mathbb{R}_{+}^{K} \right| \sum_i y_i = 1 \right\} , K = |\mathcal{S}| \\
-    argmax \; y: \mathcal{Y} \rightarrow \mathcal{S}
-\end{align}
+
+% Predictions For each time step
+% \begin{align}
+%     y_i^{(n)} = \text{probability of sleep stage i at time step n} \\
+%     \mathcal{Y} = \Bigl\{ y \in \mathbb{R}_{+}^{K}  \sum_i y_i = 1 \Bigr\} \\
+%     \mathcal{Y} = \left\{ \left. y \in \mathbb{R}_{+}^{K} \right| \sum_i y_i = 1 \right\} , \\
+%     K = |argmax \; y: \mathcal{Y} \rightarrow \mathcal{S}| \\
+% \end{align}
+
+
+
+% \begin{align}
+%     y^{\prime} \ _k^{(n)} = \frac{1}{\tau} \sum_{i=\tau(j-1)+1}^{\tau n} y_k^{(i)} \text{average of all predictions for n-th interval} \\
+%     \mathcal{Y}^{\prime} = \left\{ \left. p \in \mathbb{S} \ \right| \ p = \argmax_{y^{\prime}} \left(\frac{1}{\tau} \sum_{N/\tau < i < N/\tau + \tau} y_i \right) \right\}, \in \mathbb{S}^{N} \text{predictions for every epoch} \\
+%     \mathcal{Y}^{\prime} = \left\{ \left. p \in \mathbb{S} \ \right| \ p^{(n)} = \argmax_{k} y^{\prime} \ _k^{(n)} \right\}, \in \mathbb{S}^{N} \text{predictions for every epoch} \\
+%     \mathcal{Y}^{\prime} = \left\{ \left. p \in \mathbb{S} \ \right| \ p^{(n)} = \mathcal{S}_{\argmax_{k} \left(y^{\prime} \ _k^{(n)} \right) }\right\}, \in \mathbb{S}^{N}, n \leq N, \text{predictions for every epoch}
+% \end{align}

@@ -1,10 +1,12 @@
 \documentclass[11pt,oneside,a4paper,english]{article}
-\usepackage[latin2]{inputenc}
+%\usepackage[latin2]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[OT1]{fontenc}
 %\usepackage[T1]{fontenc}%for sans serif
 % \renewcommand*\familydefault{\sfdefault} %for sans serif
 %\usepackage[margin=2.1cm,headheight=7pt,includeheadfoot]{geometry} %original
-\usepackage[margin=1.7cm,headheight=7pt,includeheadfoot]{geometry}
+%\usepackage[margin=1.7cm,headheight=7pt,includeheadfoot]{geometry}
+\usepackage[margin=1.9cm,headheight=7pt,includeheadfoot]{geometry}
 \usepackage[english]{babel}
 \usepackage{listings}
 \usepackage{color}
@@ -13,7 +15,6 @@
 %\usepackage[framed, numbered]{matlab-prettifier}
 \usepackage{changepage}
 \usepackage{amsmath}
-\usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{fancyhdr}
@@ -38,13 +39,24 @@
 \usepackage{subcaption}
 \usepackage[export]{adjustbox}
 \usepackage{wrapfig}
+\usepackage{csquotes}
 \usepackage{amsfonts}
+\usepackage[pdfpagelabels]{hyperref}
+
 \hypersetup{
     colorlinks,
     linkcolor={black!50!black},
     citecolor={blue!50!black},
     urlcolor={black!80!black}
 }
+
+% Keywords command
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+}
+
 
 \usepackage[parfill]{parskip}
 \usepackage{graphicx}
@@ -53,11 +65,24 @@
 \newcommand\setrow[1]{\gdef\rowmac{#1}#1\ignorespaces}
 \newcommand\clearrow{\global\let\rowmac\relax}
 
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
 %\usepackage{biblatex}
 %\usepackage[backend=bibtex,style=numeric]{biblatex}
-\usepackage{biblatex}
 %\usepackage[backend=biber,style=numeric]{biblatex}
+
+% these 2
+\usepackage[backend=biber,style=numeric,sorting=none]{biblatex}
 \addbibresource{document.bib}
+
+% OR THIS ONE
+% \usepackage{biblatex}
+% \bibliography{document.bib} % TROQUEI POR ESTE
+
+
+
 %\bibliographystyle{elsarticle-num}
 %\printbibliography
 
@@ -140,9 +165,15 @@
 %\bibliographystyle{ieeetr}
 \printbibliography
 
+
+
+
 \clearpage
 
-\appendix
+\input{sections/6_appendix}
+
+
+% \appendix
 % \section{Appendix A - CNN definition, training and evaluation script}
 % \lstinputlisting[style=Python,
 %     caption=CNN definition, training and evaluation script,

@@ -1,1 +1,11 @@
-\section{Abstract}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+This project explores the application of deep learning for automatic sleep stage classification using electroencephalography (EEG) data, motivated by emerging research linking deep sleep and neurostimulation with Alzheimer's disease (AD) progression. The objective is to implement and adapt an existing state-of-the-art sleep staging pipeline to work with EEG-only recordings acquired by Optoceutics, a company researching light-based neurostimulation as a therapeutic option for AD progression. 
+A wrapper pipeline on top of a pre-trained deep learning model from literature (Olesen \textit{et al} (2022) \cite{Alexander2020}) was developed, introducing modifications to accommodate EEG-only data and implementing a visualization and multi-rater comparison framework to assess prediction quality.
+
+The proposed pipeline demonstrated high agreement with an alternate pipeline (kappa=0.82 for one subject) and acceptable validation accuracy (78\%) and kappa score (0.55) against ground truth in a public EEG dataset, despite the lack of full polysomnography input. 
+
+While limited by the small dataset and absence of manual annotations, the developed end to end framework enables scalable and efficient sleep stage prediction for internal use, allowing future validation and high throughput deployment within clinical and research settings at Optoceutics.
+
+\keywords{Alzheimer's disease, neurostimulation, automatic sleep staging, deep learning, pipeline development}
