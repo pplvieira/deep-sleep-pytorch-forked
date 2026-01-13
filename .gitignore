@@ -324,3 +324,9 @@ experiments/*
 !experiments/.gitkeep
 
 data/processed/*
+
+# models
+*.pth
+*.pt
+*.ckpt
+trained_models/
